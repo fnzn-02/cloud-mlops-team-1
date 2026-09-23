@@ -7,7 +7,8 @@
     "Humidity(%)",
     "Rainfall(mm)",
     "Holiday",
-    "is_weekend"
+    "is_weekend",
+    "month"
   ],
   "target": "Rented Bike Count",
   "split": {
@@ -20,10 +21,21 @@
   "metric": "MAE (평균 절대 오차, 단위: 대)",
   "baseline_mae": 519.57,
   "mae": {
-    "linear_regression": 339.74,
-    "random_forest": 135.1
+    "linear_regression": 336.22,
+    "random_forest": 114.41,
+    "gradient_boosting": 93.74
   },
-  "best_model": "random_forest",
+  "improvement_vs_baseline_pct": {
+    "linear_regression": 35.3,
+    "random_forest": 78.0,
+    "gradient_boosting": 82.0
+  },
+  "r2": {
+    "linear_regression": 0.511,
+    "random_forest": 0.911,
+    "gradient_boosting": 0.943
+  },
+  "best_model": "gradient_boosting",
   "model_path": "models/model.joblib",
-  "limitation": "Date 열이 없어 시간 순서가 아닌 랜덤 분할이며, 실제 서비스(미래 예측)보다 점수가 좋게 나올 수 있다."
+  "limitation": "시간 순서가 아닌 랜덤 분할이며 데이터가 1년치라 같은 달이 학습·시험에 섞인다. 실제 서비스(미래 예측)보다 점수가 좋게 나올 수 있다."
 }
