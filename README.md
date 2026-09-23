@@ -3,7 +3,7 @@
 날씨와 시간 정보로 서울 따릉이의 **시간당 자전거 대여 수**를 예측한다. 대여소 운영자가 시간대별 자전거 배치를 미리 정하는 데 사용하는 것을 목표로 한다.
 
 - 데이터 설명·전처리 규칙: [`data/README.md`](data/README.md)
-- 입력(5개): Hour, Temperature(°C), Humidity(%), Rainfall(mm), Holiday
+- 입력(6개): Hour, Temperature(°C), Humidity(%), Rainfall(mm), Holiday, is_weekend(주말 여부, Date에서 계산)
 - 정답: Rented Bike Count (시간당 대여 수, 단위: 대)
 
 ## 폴더 구조
@@ -38,6 +38,7 @@ python3 src/preprocess.py
 
 - 입력: `data/processed/bike-clean.csv` (8,448행)
 - Holiday는 숫자로 바꾼다 (Holiday=1, No Holiday=0).
+- Date로 주말 여부 `is_weekend`를 계산한다 (토·일=1, 평일=0).
 - 학습용 80% / 시험용 20%로 랜덤 분할한다 (`random_state=42` 고정). 시험용은 학습에 사용하지 않는다.
 - 기준선(학습용 평균값으로 예측), 선형회귀, 랜덤포레스트를 비교하고, MAE가 가장 낮은 모델을 저장한다.
 
@@ -48,12 +49,25 @@ python3 src/preprocess.py
 | 모델 | MAE (대) |
 |---|---:|
 | 기준선 (학습용 평균) | 519.57 |
-| 선형회귀 | 339.19 |
-| **랜덤포레스트 (채택)** | **168.02** |
+| 선형회귀 | 339.74 |
+| **랜덤포레스트 (채택)** | **135.10** |
+
+랜덤포레스트는 기준선보다 오차가 74% 작다.
+
+### 주말 여부 추가 전후 비교
+
+같은 시험 데이터, 같은 모델 설정에서 입력만 바꿔 비교했다.
+
+| 입력 | 랜덤포레스트 MAE | 평일 8·18시 MAE |
+|---|---:|---:|
+| 5개 (주말 여부 없음) | 168.02 | 493.92 |
+| **6개 (주말 여부 추가)** | **135.10** | **380.34** |
+
+주말 여부가 없으면 평일 출근 시간과 주말 아침을 구별하지 못해 두 값의 중간을 예측했다. 추가 후 주말 아침은 잘 맞지만, 평일 출퇴근 피크는 여전히 적게 예측하는 경향이 있다.
 
 ### 한계
 
-- Date 열이 없어 시간 순서가 아닌 랜덤 분할을 사용했다. 실제 서비스(미래 예측)보다 점수가 좋게 나올 수 있다.
+- 시간 순서가 아닌 랜덤 분할을 사용했다. 실제 서비스(미래 예측)보다 점수가 좋게 나올 수 있다.
 - 학습에 쓴 날씨는 관측값이다. 실제 서비스에서는 예보값을 입력하게 되므로 오차가 더 커질 수 있다.
 
 ## 모델 직접 테스트
@@ -62,8 +76,8 @@ python3 src/preprocess.py
 .venv/bin/python -c "
 import joblib, pandas as pd
 model = joblib.load('models/model.joblib')
-cols = ['Hour', 'Temperature(°C)', 'Humidity(%)', 'Rainfall(mm)', 'Holiday']
-x = [18, 25, 50, 0, 0]  # [시간, 기온, 습도, 강수량, 공휴일(1/0)]
+cols = ['Hour', 'Temperature(°C)', 'Humidity(%)', 'Rainfall(mm)', 'Holiday', 'is_weekend']
+x = [18, 25, 50, 0, 0, 0]  # [시간, 기온, 습도, 강수량, 공휴일(1/0), 주말(1/0)]
 print('예측 대여 수:', round(model.predict(pd.DataFrame([x], columns=cols))[0]), '대')
 "
 ```

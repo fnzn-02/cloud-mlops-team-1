@@ -1,16 +1,16 @@
 {
   "input": "data/raw/SeoulBikeData.csv",
-  "input_sha256": "baf7749bfc6b19ec3ddc03666c688b5a46be5c48fa6f1fccb07b96fba7e4aa2e",
-  "roles_sha256": "4ae276f76e25e420dc4b26b30d994a7c3dc04aafdc09f0dd124d4f6a427583fc",
+  "input_sha256": "373339b71a8935d69e9af0abf26a70744632119862eeb3919efb389a7b749c60",
+  "roles_sha256": "67620dece543dac7d3187c3bea6a08ecc262da9687d0f4d45804336ae2cff6b4",
   "input_rows": 8760,
   "clean_rows": 8448,
   "quarantine_rows": 312,
   "quarantine_reasons": {
     "Functioning Day:category": 295,
-    "Humidity(%):range": 17,
-    "duplicate": 1
+    "Humidity(%):range": 17
   },
   "clean_columns": [
+    "Date",
     "Rented Bike Count",
     "Hour",
     "Temperature(°C)",
@@ -20,6 +20,6 @@
     "Seasons",
     "Holiday"
   ],
-  "clean_sha256": "13e144a617b469b128c523dca96840dd93b1f435c9072ad45de777f40030b46b",
-  "quarantine_sha256": "49e19c719b75897b1f456b8ba8fa9b6e0aa47f51fa43ece3ea53ece9e0a92043"
+  "clean_sha256": "26f82dddff28b3e41df2dacee7887f3a366f0eab57c396ec16ef90218239dab9",
+  "quarantine_sha256": "523ee33b6bacd1676fa74a6f5f688dc85d91cbccee6c9dae59ac7b19a27654eb"
 }

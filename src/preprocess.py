@@ -3,6 +3,7 @@
 import argparse
 import collections
 import csv
+import datetime
 import hashlib
 import json
 import math
@@ -13,8 +14,8 @@ def digest(path):  # 파일 동일성 확인용 SHA-256
     return hashlib.sha256(Path(path).read_bytes()).hexdigest()
 
 
-def read_csv(path):
-    with Path(path).open(encoding='utf-8-sig', newline='') as handle:
+def read_csv(path, encoding):
+    with Path(path).open(encoding=encoding, newline='') as handle:
         reader = csv.DictReader(handle)
         rows = list(reader)
         columns = reader.fieldnames or []
@@ -33,14 +34,16 @@ def write_csv(path, columns, rows):
         writer.writerows(rows)
 
 
-def load_roles(path, columns):
-    config = json.loads(Path(path).read_text(encoding='utf-8'))
+def load_roles(path):
+    return json.loads(Path(path).read_text(encoding='utf-8'))
+
+
+def check_roles(config, columns):
     if set(config['columns']) != set(columns):  # 모든 열에 사람이 정한 역할이 있어야 한다
         raise ValueError('CSV 열과 column-roles.json의 columns가 다릅니다.')
     for name, rule in config['columns'].items():
         if rule.get('role') not in ['feature', 'target', 'identifier', 'exclude', 'split'] or not rule.get('reason'):
             raise ValueError(f'{name}: 역할과 선택 이유를 작성하세요.')
-    return config
 
 
 def check_row(row, config):  # 한 행이 규칙을 어긴 이유 목록을 반환한다
@@ -61,6 +64,11 @@ def check_row(row, config):  # 한 행이 규칙을 어긴 이유 목록을 반�
                 reasons.append(f'{name}:not_finite')
             elif number < rule.get('min', -math.inf) or number > rule.get('max', math.inf):
                 reasons.append(f'{name}:range')
+        elif rule.get('type') == 'date':
+            try:
+                datetime.datetime.strptime(value, '%d/%m/%Y')  # 원본 날짜 형식: 일/월/연
+            except ValueError:
+                reasons.append(f'{name}:type')
         if rule.get('allowed') and value not in rule['allowed']:
             reasons.append(f'{name}:category')
     return reasons
@@ -73,8 +81,9 @@ def main():
     parser.add_argument('--out', default='data/processed')
     args = parser.parse_args()
 
-    columns, rows = read_csv(args.input)
-    config = load_roles(args.roles, columns)
+    config = load_roles(args.roles)
+    columns, rows = read_csv(args.input, config.get('encoding', 'utf-8-sig'))
+    check_roles(config, columns)
     kept_columns = [name for name in columns if config['columns'][name]['role'] != 'exclude']
 
     clean, quarantine, seen = [], [], set()

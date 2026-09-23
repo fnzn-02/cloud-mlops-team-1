@@ -1,12 +1,13 @@
 {
   "input": "data/processed/bike-clean.csv",
-  "input_sha256": "13e144a617b469b128c523dca96840dd93b1f435c9072ad45de777f40030b46b",
+  "input_sha256": "26f82dddff28b3e41df2dacee7887f3a366f0eab57c396ec16ef90218239dab9",
   "features": [
     "Hour",
     "Temperature(°C)",
     "Humidity(%)",
     "Rainfall(mm)",
-    "Holiday"
+    "Holiday",
+    "is_weekend"
   ],
   "target": "Rented Bike Count",
   "split": {
@@ -19,8 +20,8 @@
   "metric": "MAE (평균 절대 오차, 단위: 대)",
   "baseline_mae": 519.57,
   "mae": {
-    "linear_regression": 339.19,
-    "random_forest": 168.02
+    "linear_regression": 339.74,
+    "random_forest": 135.1
   },
   "best_model": "random_forest",
   "model_path": "models/model.joblib",
