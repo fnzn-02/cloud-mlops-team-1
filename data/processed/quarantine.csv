@@ -1,0 +1,313 @@
+record_number,Rented Bike Count,Hour,Temperature(°C),Humidity(%),Rainfall(mm),Snowfall (cm),Seasons,Holiday,Functioning Day,reason
+3146,0,0,14.4,82,0,0,Spring,No Holiday,No,Functioning Day:category
+3147,0,1,13.6,81,0,0,Spring,No Holiday,No,Functioning Day:category
+3148,0,2,12.7,80,0,0,Spring,No Holiday,No,Functioning Day:category
+3149,0,3,11.6,81,0,0,Spring,No Holiday,No,Functioning Day:category
+3150,0,4,10.2,83,0,0,Spring,No Holiday,No,Functioning Day:category
+3151,0,5,9.7,84,0,0,Spring,No Holiday,No,Functioning Day:category
+3152,0,6,9,86,0,0,Spring,No Holiday,No,Functioning Day:category
+3153,0,7,8.8,85,0,0,Spring,No Holiday,No,Functioning Day:category
+3154,0,8,9.7,77,0,0,Spring,No Holiday,No,Functioning Day:category
+3155,0,9,11.8,59,0,0,Spring,No Holiday,No,Functioning Day:category
+3156,0,10,13.3,51,0,0,Spring,No Holiday,No,Functioning Day:category
+3157,0,11,14.9,44,0,0,Spring,No Holiday,No,Functioning Day:category
+3158,0,12,15.7,46,0,0,Spring,No Holiday,No,Functioning Day:category
+3159,0,13,15.6,38,0,0,Spring,No Holiday,No,Functioning Day:category
+3160,0,14,16.4,28,0,0,Spring,No Holiday,No,Functioning Day:category
+3161,0,15,17,28,0,0,Spring,No Holiday,No,Functioning Day:category
+3162,0,16,16.9,23,0,0,Spring,No Holiday,No,Functioning Day:category
+3163,0,17,16.2,22,0,0,Spring,No Holiday,No,Functioning Day:category
+3164,0,18,15.2,21,0,0,Spring,No Holiday,No,Functioning Day:category
+3165,0,19,13.2,28,0,0,Spring,No Holiday,No,Functioning Day:category
+3166,0,20,11.9,33,0,0,Spring,No Holiday,No,Functioning Day:category
+3167,0,21,11,34,0,0,Spring,No Holiday,No,Functioning Day:category
+3168,0,22,10.3,42,0,0,Spring,No Holiday,No,Functioning Day:category
+3169,0,23,9.7,45,0,0,Spring,No Holiday,No,Functioning Day:category
+3842,0,0,14.5,63,0,0,Spring,No Holiday,No,Functioning Day:category
+3843,0,1,13.9,66,0,0,Spring,No Holiday,No,Functioning Day:category
+3844,0,2,13.1,73,0,0,Spring,No Holiday,No,Functioning Day:category
+3845,0,3,12.9,74,0,0,Spring,No Holiday,No,Functioning Day:category
+3846,0,4,12,79,0,0,Spring,No Holiday,No,Functioning Day:category
+3847,0,5,11.5,80,0,0,Spring,No Holiday,No,Functioning Day:category
+3848,0,6,11.4,80,0,0,Spring,No Holiday,No,Functioning Day:category
+3849,0,7,12.1,71,0,0,Spring,No Holiday,No,Functioning Day:category
+3850,0,8,13.5,63,0,0,Spring,No Holiday,No,Functioning Day:category
+3851,0,9,15.5,55,0,0,Spring,No Holiday,No,Functioning Day:category
+3852,0,10,17.3,52,0,0,Spring,No Holiday,No,Functioning Day:category
+3853,0,11,18.3,51,0,0,Spring,No Holiday,No,Functioning Day:category
+3854,0,12,19.8,49,0,0,Spring,No Holiday,No,Functioning Day:category
+3855,0,13,20.7,46,0,0,Spring,No Holiday,No,Functioning Day:category
+3856,0,14,21.2,47,0,0,Spring,No Holiday,No,Functioning Day:category
+3857,0,15,20.4,51,0,0,Spring,No Holiday,No,Functioning Day:category
+3858,0,16,19.6,54,0,0,Spring,No Holiday,No,Functioning Day:category
+3859,0,17,19.2,54,0,0,Spring,No Holiday,No,Functioning Day:category
+3860,0,18,18,61,0,0,Spring,No Holiday,No,Functioning Day:category
+3861,0,19,15.5,74,0,0,Spring,No Holiday,No,Functioning Day:category
+3862,0,20,13.6,82,0,0,Spring,No Holiday,No,Functioning Day:category
+3863,0,21,12.6,85,0,0,Spring,No Holiday,No,Functioning Day:category
+3864,0,22,12.3,85,0,0,Spring,No Holiday,No,Functioning Day:category
+3865,0,23,12.4,85,0,0,Spring,No Holiday,No,Functioning Day:category
+4065,436,7,11.4,0,0,0,Spring,No Holiday,Yes,Humidity(%):range
+4108,262,2,13.9,0,0,0,Spring,No Holiday,Yes,Humidity(%):range
+4109,165,3,13,0,0,0,Spring,No Holiday,Yes,Humidity(%):range
+4110,113,4,12.4,0,0,0,Spring,No Holiday,Yes,Humidity(%):range
+4111,200,5,11.9,0,0,0,Spring,No Holiday,Yes,Humidity(%):range
+4112,467,6,11.4,0,0,0,Spring,No Holiday,Yes,Humidity(%):range
+4113,1135,7,12.3,0,0,0,Spring,No Holiday,Yes,Humidity(%):range
+4133,406,3,15.5,0,0,0,Spring,Holiday,Yes,Humidity(%):range
+4134,248,4,15.6,0,0,0,Spring,Holiday,Yes,Humidity(%):range
+4135,182,5,15.7,0,0,0,Spring,Holiday,Yes,Humidity(%):range
+4136,277,6,15.5,0,0,0,Spring,Holiday,Yes,Humidity(%):range
+4255,174,5,17.6,0,0,0,Spring,No Holiday,Yes,Humidity(%):range
+4257,341,7,17.6,0,0,0,Spring,No Holiday,Yes,Humidity(%):range
+4278,134,4,17.2,0,0,0,Spring,No Holiday,Yes,Humidity(%):range
+4279,247,5,16.6,0,0,0,Spring,No Holiday,Yes,Humidity(%):range
+4280,641,6,16.2,0,0,0,Spring,No Holiday,Yes,Humidity(%):range
+4281,1502,7,16.8,0,0,0,Spring,No Holiday,Yes,Humidity(%):range
+6986,0,0,19.5,73,0,0,Autumn,No Holiday,No,Functioning Day:category
+6987,0,1,19.3,71,0,0,Autumn,No Holiday,No,Functioning Day:category
+6988,0,2,18.8,74,0,0,Autumn,No Holiday,No,Functioning Day:category
+6989,0,3,18.7,76,0,0,Autumn,No Holiday,No,Functioning Day:category
+6990,0,4,18.3,78,0,0,Autumn,No Holiday,No,Functioning Day:category
+6991,0,5,17.9,77,0,0,Autumn,No Holiday,No,Functioning Day:category
+6992,0,6,17.7,77,0,0,Autumn,No Holiday,No,Functioning Day:category
+6993,0,7,17.8,76,0,0,Autumn,No Holiday,No,Functioning Day:category
+6994,0,8,18.7,73,0,0,Autumn,No Holiday,No,Functioning Day:category
+6995,0,9,20.8,64,0,0,Autumn,No Holiday,No,Functioning Day:category
+6996,0,10,22.7,54,0,0,Autumn,No Holiday,No,Functioning Day:category
+6997,0,11,24.1,46,0,0,Autumn,No Holiday,No,Functioning Day:category
+6998,0,12,24.7,43,0,0,Autumn,No Holiday,No,Functioning Day:category
+6999,0,13,25.6,40,0,0,Autumn,No Holiday,No,Functioning Day:category
+7000,0,14,26.1,37,0,0,Autumn,No Holiday,No,Functioning Day:category
+7001,0,15,26.1,43,0,0,Autumn,No Holiday,No,Functioning Day:category
+7002,0,16,26.4,34,0,0,Autumn,No Holiday,No,Functioning Day:category
+7003,0,17,25.5,38,0,0,Autumn,No Holiday,No,Functioning Day:category
+7004,0,18,24.8,48,0,0,Autumn,No Holiday,No,Functioning Day:category
+7005,0,19,23.2,57,0,0,Autumn,No Holiday,No,Functioning Day:category
+7006,0,20,22.6,58,0,0,Autumn,No Holiday,No,Functioning Day:category
+7007,0,21,22.1,61,0,0,Autumn,No Holiday,No,Functioning Day:category
+7008,0,22,21.8,65,0,0,Autumn,No Holiday,No,Functioning Day:category
+7009,0,23,21.2,69,0,0,Autumn,No Holiday,No,Functioning Day:category
+7010,0,0,21,66,0,0,Autumn,No Holiday,No,Functioning Day:category
+7011,0,1,20.5,64,0,0,Autumn,No Holiday,No,Functioning Day:category
+7012,0,2,20,70,0,0,Autumn,No Holiday,No,Functioning Day:category
+7013,0,3,19.7,70,0,0,Autumn,No Holiday,No,Functioning Day:category
+7014,0,4,19.5,70,0,0,Autumn,No Holiday,No,Functioning Day:category
+7015,0,5,19.3,73,0,0,Autumn,No Holiday,No,Functioning Day:category
+7016,0,6,19,76,0,0,Autumn,No Holiday,No,Functioning Day:category
+7017,0,7,19,74,0,0,Autumn,No Holiday,No,Functioning Day:category
+7018,0,8,19.8,71,0,0,Autumn,No Holiday,No,Functioning Day:category
+7019,0,9,21.5,61,0,0,Autumn,No Holiday,No,Functioning Day:category
+7020,0,10,22.9,59,0,0,Autumn,No Holiday,No,Functioning Day:category
+7021,0,11,23.6,55,0,0,Autumn,No Holiday,No,Functioning Day:category
+7022,0,12,24.9,51,0,0,Autumn,No Holiday,No,Functioning Day:category
+7023,0,13,26.5,39,0,0,Autumn,No Holiday,No,Functioning Day:category
+7024,0,14,26.1,40,0,0,Autumn,No Holiday,No,Functioning Day:category
+7025,0,15,25.9,39,0,0,Autumn,No Holiday,No,Functioning Day:category
+7026,0,16,25.6,41,0,0,Autumn,No Holiday,No,Functioning Day:category
+7027,0,17,25,44,0,0,Autumn,No Holiday,No,Functioning Day:category
+7028,0,18,24,55,0,0,Autumn,No Holiday,No,Functioning Day:category
+7029,0,19,23.5,58,0,0,Autumn,No Holiday,No,Functioning Day:category
+7030,0,20,22.6,67,0,0,Autumn,No Holiday,No,Functioning Day:category
+7031,0,21,21.7,63,0.1,0,Autumn,No Holiday,No,Functioning Day:category
+7032,0,22,20.9,71,0.1,0,Autumn,No Holiday,No,Functioning Day:category
+7033,0,23,20.4,57,0,0,Autumn,No Holiday,No,Functioning Day:category
+7226,0,0,17.1,52,0,0,Autumn,No Holiday,No,Functioning Day:category
+7227,0,1,16.5,53,0,0,Autumn,No Holiday,No,Functioning Day:category
+7228,0,2,16,56,0,0,Autumn,No Holiday,No,Functioning Day:category
+7229,0,3,15.3,59,0,0,Autumn,No Holiday,No,Functioning Day:category
+7230,0,4,14.7,62,0,0,Autumn,No Holiday,No,Functioning Day:category
+7231,0,5,14.5,60,0,0,Autumn,No Holiday,No,Functioning Day:category
+7232,0,6,14.4,61,0,0,Autumn,No Holiday,No,Functioning Day:category
+7233,0,7,14.5,62,0,0,Autumn,No Holiday,No,Functioning Day:category
+7234,0,8,15.2,58,0,0,Autumn,No Holiday,No,Functioning Day:category
+7235,0,9,16.5,50,0,0,Autumn,No Holiday,No,Functioning Day:category
+7236,0,10,17.4,51,0,0,Autumn,No Holiday,No,Functioning Day:category
+7237,0,11,17.9,54,0,0,Autumn,No Holiday,No,Functioning Day:category
+7238,0,12,19,52,0,0,Autumn,No Holiday,No,Functioning Day:category
+7239,0,13,19.1,53,0,0,Autumn,No Holiday,No,Functioning Day:category
+7240,0,14,19.4,53,0,0,Autumn,No Holiday,No,Functioning Day:category
+7241,0,15,20.3,52,0,0,Autumn,No Holiday,No,Functioning Day:category
+7242,0,16,21.9,46,0,0,Autumn,No Holiday,No,Functioning Day:category
+7243,0,17,21.7,52,0,0,Autumn,No Holiday,No,Functioning Day:category
+7244,0,18,20.4,56,0,0,Autumn,No Holiday,No,Functioning Day:category
+7245,0,19,19.3,61,0,0,Autumn,No Holiday,No,Functioning Day:category
+7246,0,20,18,67,0,0,Autumn,No Holiday,No,Functioning Day:category
+7247,0,21,17.8,66,0,0,Autumn,No Holiday,No,Functioning Day:category
+7248,0,22,17.1,70,0,0,Autumn,No Holiday,No,Functioning Day:category
+7249,0,23,16.6,69,0,0,Autumn,No Holiday,No,Functioning Day:category
+7274,0,0,18.1,60,0,0,Autumn,No Holiday,No,Functioning Day:category
+7275,0,1,17.5,66,0,0,Autumn,No Holiday,No,Functioning Day:category
+7276,0,2,17.3,68,0,0,Autumn,No Holiday,No,Functioning Day:category
+7277,0,3,17,70,0,0,Autumn,No Holiday,No,Functioning Day:category
+7278,0,4,16.6,73,0,0,Autumn,No Holiday,No,Functioning Day:category
+7279,0,5,16.1,78,0,0,Autumn,No Holiday,No,Functioning Day:category
+7280,0,6,15.5,80,0,0,Autumn,No Holiday,No,Functioning Day:category
+7281,0,7,15.1,81,0,0,Autumn,No Holiday,No,Functioning Day:category
+7282,0,8,16.2,69,0,0,Autumn,No Holiday,No,Functioning Day:category
+7283,0,9,18.5,62,0,0,Autumn,No Holiday,No,Functioning Day:category
+7284,0,10,20.7,62,0,0,Autumn,No Holiday,No,Functioning Day:category
+7285,0,11,20.2,63,0,0,Autumn,No Holiday,No,Functioning Day:category
+7286,0,12,20.8,47,0,0,Autumn,No Holiday,No,Functioning Day:category
+7287,0,13,21.1,42,0,0,Autumn,No Holiday,No,Functioning Day:category
+7288,0,14,21.1,32,0,0,Autumn,No Holiday,No,Functioning Day:category
+7289,0,15,21.3,32,0,0,Autumn,No Holiday,No,Functioning Day:category
+7290,0,16,21.2,28,0,0,Autumn,No Holiday,No,Functioning Day:category
+7291,0,17,20.4,31,0,0,Autumn,No Holiday,No,Functioning Day:category
+7292,0,18,18.3,34,0,0,Autumn,No Holiday,No,Functioning Day:category
+7293,0,19,17.1,35,0,0,Autumn,No Holiday,No,Functioning Day:category
+7294,0,20,16,39,0,0,Autumn,No Holiday,No,Functioning Day:category
+7295,0,21,15.2,40,0,0,Autumn,No Holiday,No,Functioning Day:category
+7296,0,22,14.6,46,0,0,Autumn,No Holiday,No,Functioning Day:category
+7297,0,23,14.1,53,0,0,Autumn,No Holiday,No,Functioning Day:category
+7322,0,0,13,72,0,0,Autumn,No Holiday,No,Functioning Day:category
+7323,0,1,12.5,74,0,0,Autumn,No Holiday,No,Functioning Day:category
+7324,0,2,12.3,75,0,0,Autumn,No Holiday,No,Functioning Day:category
+7325,0,3,11.8,78,0,0,Autumn,No Holiday,No,Functioning Day:category
+7326,0,4,11.2,80,0,0,Autumn,No Holiday,No,Functioning Day:category
+7327,0,5,10.8,82,0,0,Autumn,No Holiday,No,Functioning Day:category
+7328,0,6,10.6,81,0,0,Autumn,No Holiday,No,Functioning Day:category
+7329,0,7,10.4,81,0,0,Autumn,No Holiday,No,Functioning Day:category
+7330,0,8,11.2,69,0,0,Autumn,No Holiday,No,Functioning Day:category
+7331,0,9,13.9,66,0,0,Autumn,No Holiday,No,Functioning Day:category
+7332,0,10,16.7,58,0,0,Autumn,No Holiday,No,Functioning Day:category
+7333,0,11,18.3,44,0,0,Autumn,No Holiday,No,Functioning Day:category
+7334,0,12,19.4,41,0,0,Autumn,No Holiday,No,Functioning Day:category
+7335,0,13,20.4,36,0,0,Autumn,No Holiday,No,Functioning Day:category
+7336,0,14,21.5,39,0,0,Autumn,No Holiday,No,Functioning Day:category
+7337,0,15,21.8,38,0,0,Autumn,No Holiday,No,Functioning Day:category
+7338,0,16,21.7,36,0,0,Autumn,No Holiday,No,Functioning Day:category
+7339,0,17,21.2,40,0,0,Autumn,No Holiday,No,Functioning Day:category
+7340,0,18,19.2,48,0,0,Autumn,No Holiday,No,Functioning Day:category
+7341,0,19,17.6,57,0,0,Autumn,No Holiday,No,Functioning Day:category
+7342,0,20,16.8,62,0,0,Autumn,No Holiday,No,Functioning Day:category
+7343,0,21,16.2,65,0,0,Autumn,No Holiday,No,Functioning Day:category
+7344,0,22,15.5,69,0,0,Autumn,No Holiday,No,Functioning Day:category
+7345,0,23,14.8,68,0,0,Autumn,No Holiday,No,Functioning Day:category
+7370,0,0,15.5,65,0,0,Autumn,No Holiday,No,Functioning Day:category
+7371,0,1,14.7,69,0,0,Autumn,No Holiday,No,Functioning Day:category
+7372,0,2,14,73,0,0,Autumn,No Holiday,No,Functioning Day:category
+7373,0,3,13.6,75,0,0,Autumn,No Holiday,No,Functioning Day:category
+7374,0,4,13.3,75,0,0,Autumn,No Holiday,No,Functioning Day:category
+7375,0,5,13.2,73,0,0,Autumn,No Holiday,No,Functioning Day:category
+7376,0,6,13.2,73,0,0,Autumn,No Holiday,No,Functioning Day:category
+7377,0,7,13.2,75,0,0,Autumn,No Holiday,No,Functioning Day:category
+7378,0,8,13.9,68,0,0,Autumn,No Holiday,No,Functioning Day:category
+7379,0,9,16.7,58,0,0,Autumn,No Holiday,No,Functioning Day:category
+7380,0,10,19,49,0,0,Autumn,No Holiday,No,Functioning Day:category
+7381,0,11,21.3,41,0,0,Autumn,No Holiday,No,Functioning Day:category
+7382,0,12,23.2,38,0,0,Autumn,No Holiday,No,Functioning Day:category
+7383,0,13,23.4,39,0,0,Autumn,No Holiday,No,Functioning Day:category
+7384,0,14,24.3,39,0,0,Autumn,No Holiday,No,Functioning Day:category
+7385,0,15,25.3,39,0,0,Autumn,No Holiday,No,Functioning Day:category
+7386,0,16,25.1,41,0,0,Autumn,No Holiday,No,Functioning Day:category
+7387,0,17,24.2,44,0,0,Autumn,No Holiday,No,Functioning Day:category
+7388,0,18,23.1,48,0,0,Autumn,No Holiday,No,Functioning Day:category
+7389,0,19,22.3,50,0,0,Autumn,No Holiday,No,Functioning Day:category
+7390,0,20,21.3,53,0,0,Autumn,No Holiday,No,Functioning Day:category
+7391,0,21,20.5,57,0,0,Autumn,No Holiday,No,Functioning Day:category
+7392,0,22,19.8,60,0,0,Autumn,No Holiday,No,Functioning Day:category
+7393,0,23,19.4,62,0,0,Autumn,No Holiday,No,Functioning Day:category
+7418,0,0,16.4,94,1,0,Autumn,No Holiday,No,Functioning Day:category
+7419,0,1,16.7,89,1,0,Autumn,No Holiday,No,Functioning Day:category
+7420,0,2,16.9,88,1.5,0,Autumn,No Holiday,No,Functioning Day:category
+7421,0,3,16.8,90,2,0,Autumn,No Holiday,No,Functioning Day:category
+7422,0,4,16.9,89,2.5,0,Autumn,No Holiday,No,Functioning Day:category
+7423,0,5,16.7,93,4.5,0,Autumn,No Holiday,No,Functioning Day:category
+7424,0,6,16.5,96,8.5,0,Autumn,No Holiday,No,Functioning Day:category
+7490,0,0,12.6,54,0,0,Autumn,Holiday,No,Functioning Day:category
+7491,0,1,12,58,0,0,Autumn,Holiday,No,Functioning Day:category
+7492,0,2,11.4,65,0,0,Autumn,Holiday,No,Functioning Day:category
+7493,0,3,11,66,0,0,Autumn,Holiday,No,Functioning Day:category
+7494,0,4,11,63,0,0,Autumn,Holiday,No,Functioning Day:category
+7495,0,5,10.8,64,0,0,Autumn,Holiday,No,Functioning Day:category
+7496,0,6,10.8,69,0,0,Autumn,Holiday,No,Functioning Day:category
+7497,0,7,10.9,70,0,0,Autumn,Holiday,No,Functioning Day:category
+7498,0,8,11.4,66,0,0,Autumn,Holiday,No,Functioning Day:category
+7499,0,9,12.8,57,0,0,Autumn,Holiday,No,Functioning Day:category
+7500,0,10,14.8,51,0,0,Autumn,Holiday,No,Functioning Day:category
+7501,0,11,16.4,45,0,0,Autumn,Holiday,No,Functioning Day:category
+7502,0,12,18.3,40,0,0,Autumn,Holiday,No,Functioning Day:category
+7503,0,13,19.2,39,0,0,Autumn,Holiday,No,Functioning Day:category
+7504,0,14,18.8,39,0,0,Autumn,Holiday,No,Functioning Day:category
+7505,0,15,18.3,40,0,0,Autumn,Holiday,No,Functioning Day:category
+7506,0,16,19,39,0,0,Autumn,Holiday,No,Functioning Day:category
+7507,0,17,18.4,39,0,0,Autumn,Holiday,No,Functioning Day:category
+7508,0,18,17.7,43,0,0,Autumn,Holiday,No,Functioning Day:category
+7509,0,19,17.3,47,0,0,Autumn,Holiday,No,Functioning Day:category
+7510,0,20,17,49,0,0,Autumn,Holiday,No,Functioning Day:category
+7511,0,21,16.8,52,0,0,Autumn,Holiday,No,Functioning Day:category
+7512,0,22,16.7,55,0,0,Autumn,Holiday,No,Functioning Day:category
+7513,0,23,16.6,53,0,0,Autumn,Holiday,No,Functioning Day:category
+8090,0,0,8.8,63,0,0,Autumn,No Holiday,No,Functioning Day:category
+8091,0,1,8.5,61,0,0,Autumn,No Holiday,No,Functioning Day:category
+8092,0,2,7.6,68,0,0,Autumn,No Holiday,No,Functioning Day:category
+8093,0,3,7.1,67,0,0,Autumn,No Holiday,No,Functioning Day:category
+8094,0,4,6.3,72,0,0,Autumn,No Holiday,No,Functioning Day:category
+8095,0,5,6.1,75,0,0,Autumn,No Holiday,No,Functioning Day:category
+8096,0,6,5.5,78,0,0,Autumn,No Holiday,No,Functioning Day:category
+8097,0,7,5.2,79,0,0,Autumn,No Holiday,No,Functioning Day:category
+8098,0,8,5.4,75,0,0,Autumn,No Holiday,No,Functioning Day:category
+8099,0,9,7.9,58,0,0,Autumn,No Holiday,No,Functioning Day:category
+8100,0,10,11,49,0,0,Autumn,No Holiday,No,Functioning Day:category
+8101,0,11,14.5,42,0,0,Autumn,No Holiday,No,Functioning Day:category
+8102,0,12,16.5,37,0,0,Autumn,No Holiday,No,Functioning Day:category
+8103,0,13,17.8,29,0,0,Autumn,No Holiday,No,Functioning Day:category
+8104,0,14,18.1,24,0,0,Autumn,No Holiday,No,Functioning Day:category
+8105,0,15,18.5,25,0,0,Autumn,No Holiday,No,Functioning Day:category
+8106,0,16,18.7,25,0,0,Autumn,No Holiday,No,Functioning Day:category
+8107,0,17,16.7,45,0,0,Autumn,No Holiday,No,Functioning Day:category
+8108,0,18,14.2,51,0,0,Autumn,No Holiday,No,Functioning Day:category
+8109,0,19,13.4,62,0,0,Autumn,No Holiday,No,Functioning Day:category
+8110,0,20,12.1,68,0,0,Autumn,No Holiday,No,Functioning Day:category
+8111,0,21,11.1,69,0,0,Autumn,No Holiday,No,Functioning Day:category
+8112,0,22,10,68,0,0,Autumn,No Holiday,No,Functioning Day:category
+8113,0,23,9.2,65,0,0,Autumn,No Holiday,No,Functioning Day:category
+8162,0,0,10,73,0,0,Autumn,No Holiday,No,Functioning Day:category
+8163,0,1,9.8,75,0,0,Autumn,No Holiday,No,Functioning Day:category
+8164,0,2,9.7,78,0,0,Autumn,No Holiday,No,Functioning Day:category
+8165,0,3,9.4,81,0,0,Autumn,No Holiday,No,Functioning Day:category
+8166,0,4,9.1,81,0,0,Autumn,No Holiday,No,Functioning Day:category
+8167,0,5,8.8,84,0,0,Autumn,No Holiday,No,Functioning Day:category
+8168,0,6,8.5,83,0,0,Autumn,No Holiday,No,Functioning Day:category
+8169,0,7,8.3,84,0,0,Autumn,No Holiday,No,Functioning Day:category
+8170,0,8,8.7,77,0,0,Autumn,No Holiday,No,Functioning Day:category
+8171,0,9,10.1,68,0,0,Autumn,No Holiday,No,Functioning Day:category
+8172,0,10,11.7,62,0,0,Autumn,No Holiday,No,Functioning Day:category
+8173,0,11,13,55,0,0,Autumn,No Holiday,No,Functioning Day:category
+8174,0,12,14.5,57,0,0,Autumn,No Holiday,No,Functioning Day:category
+8175,0,13,16.1,56,0,0,Autumn,No Holiday,No,Functioning Day:category
+8176,0,14,17.4,50,0,0,Autumn,No Holiday,No,Functioning Day:category
+8177,0,15,16.3,54,0,0,Autumn,No Holiday,No,Functioning Day:category
+8178,0,16,16.6,55,0,0,Autumn,No Holiday,No,Functioning Day:category
+8179,0,17,15.3,63,0,0,Autumn,No Holiday,No,Functioning Day:category
+8180,0,18,14,71,0,0,Autumn,No Holiday,No,Functioning Day:category
+8181,0,19,13.3,72,0,0,Autumn,No Holiday,No,Functioning Day:category
+8182,0,20,13.2,73,0,0,Autumn,No Holiday,No,Functioning Day:category
+8183,0,21,13,76,0,0,Autumn,No Holiday,No,Functioning Day:category
+8184,0,22,12.3,73,0,0,Autumn,No Holiday,No,Functioning Day:category
+8185,0,23,12.2,74,0,0,Autumn,No Holiday,No,Functioning Day:category
+8234,0,0,12,96,18,0,Autumn,No Holiday,No,Functioning Day:category
+8235,0,1,11.4,89,0,0,Autumn,No Holiday,No,Functioning Day:category
+8236,0,2,11.3,88,0,0,Autumn,No Holiday,No,Functioning Day:category
+8237,0,3,10.8,82,0.5,0,Autumn,No Holiday,No,Functioning Day:category
+8238,0,4,10.6,75,0,0,Autumn,No Holiday,No,Functioning Day:category
+8239,0,5,10.9,68,0,0,Autumn,No Holiday,No,Functioning Day:category
+8240,0,6,11,70,0,0,Autumn,No Holiday,No,Functioning Day:category
+8241,0,7,10.4,81,0,0,Autumn,No Holiday,No,duplicate|Functioning Day:category
+8242,0,8,10.1,85,0,0,Autumn,No Holiday,No,Functioning Day:category
+8243,0,9,10.8,78,0.5,0,Autumn,No Holiday,No,Functioning Day:category
+8244,0,10,11.3,68,0,0,Autumn,No Holiday,No,Functioning Day:category
+8245,0,11,13.3,59,0,0,Autumn,No Holiday,No,Functioning Day:category
+8246,0,12,13.9,50,0,0,Autumn,No Holiday,No,Functioning Day:category
+8247,0,13,14,46,0,0,Autumn,No Holiday,No,Functioning Day:category
+8248,0,14,15,49,0,0,Autumn,No Holiday,No,Functioning Day:category
+8249,0,15,15.1,52,0,0,Autumn,No Holiday,No,Functioning Day:category
+8250,0,16,14.3,59,0,0,Autumn,No Holiday,No,Functioning Day:category
+8251,0,17,12.9,66,0,0,Autumn,No Holiday,No,Functioning Day:category
+8252,0,18,12.3,69,0,0,Autumn,No Holiday,No,Functioning Day:category
+8253,0,19,11.9,71,0,0,Autumn,No Holiday,No,Functioning Day:category
+8254,0,20,11.9,72,0,0,Autumn,No Holiday,No,Functioning Day:category
+8255,0,21,11.4,74,0,0,Autumn,No Holiday,No,Functioning Day:category
+8256,0,22,11.2,75,0,0,Autumn,No Holiday,No,Functioning Day:category
+8257,0,23,10.9,76,0,0,Autumn,No Holiday,No,Functioning Day:category

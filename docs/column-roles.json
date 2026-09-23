@@ -1,0 +1,75 @@
+{
+  "dataset": "서울 따릉이 시간별 대여 수와 날씨 (data/raw/SeoulBikeData.csv)",
+  "prediction_time": "대여소 운영자가 해당 시간의 자전거 배치를 결정하기 전",
+  "row_meaning": "하루 중 한 시간 동안의 자전거 대여 수와 그 시간의 날씨·계절·공휴일·운영 여부",
+  "duplicate_policy": "모든 열이 같은 후속 행은 격리한다. Date 열이 없어 진짜 중복인지 확인할 수 없으므로 원인은 duplicate로 남긴다.",
+  "missing_policy": "필수 값 결측은 격리하며 목표 Rented Bike Count를 임의로 채우지 않는다.",
+  "columns": {
+    "Rented Bike Count": {
+      "role": "target",
+      "type": "number",
+      "required": true,
+      "min": 0,
+      "reason": "해당 시간이 끝나야 관측되는 대여 수이므로 예측 입력으로 사용할 수 없다."
+    },
+    "Hour": {
+      "role": "feature",
+      "type": "number",
+      "required": true,
+      "min": 0,
+      "max": 23,
+      "reason": "예측 대상 시각은 미리 알 수 있다."
+    },
+    "Temperature(°C)": {
+      "role": "feature",
+      "type": "number",
+      "required": true,
+      "min": -30,
+      "max": 45,
+      "reason": "기온은 예보로 미리 알 수 있다. 학습 자료는 관측값이므로 서비스 입력(예보값)과 다를 수 있다."
+    },
+    "Humidity(%)": {
+      "role": "feature",
+      "type": "number",
+      "required": true,
+      "min": 1,
+      "max": 100,
+      "reason": "습도는 예보로 미리 알 수 있다. 서울에서 0%는 사실상 불가능해 센서 오류로 보고 격리한다(팀 결정)."
+    },
+    "Rainfall(mm)": {
+      "role": "feature",
+      "type": "number",
+      "required": true,
+      "min": 0,
+      "reason": "강수량은 예보로 미리 알 수 있다."
+    },
+    "Snowfall (cm)": {
+      "role": "feature",
+      "type": "number",
+      "required": true,
+      "min": 0,
+      "reason": "적설량은 예보로 미리 알 수 있다."
+    },
+    "Seasons": {
+      "role": "feature",
+      "type": "category",
+      "required": true,
+      "allowed": ["Spring", "Summer", "Autumn", "Winter"],
+      "reason": "계절은 날짜로 미리 알 수 있다."
+    },
+    "Holiday": {
+      "role": "feature",
+      "type": "category",
+      "required": true,
+      "allowed": ["Holiday", "No Holiday"],
+      "reason": "공휴일 여부는 달력으로 미리 알 수 있다."
+    },
+    "Functioning Day": {
+      "role": "exclude",
+      "type": "category",
+      "required": true,
+      "allowed": ["Yes"],
+      "reason": "No인 행은 대여 수가 항상 0이라 예측 의미가 없어 격리한다(팀 결정). 격리 후 값이 모두 Yes라 정보가 없으므로 처리 결과에서 열을 뺀다."
+    }
+  }
+}
