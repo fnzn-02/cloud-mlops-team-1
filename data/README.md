@@ -30,7 +30,7 @@ Label은 머신러닝 모델이 예측하고자 하는 값이다.
 
 | 컬럼 | 설명 | 역할 |
 |---|---|---|
-| Date | 날짜(일/월/연) | 식별자 → 학습 단계에서 주말 여부(`is_weekend`, 토·일=1) 계산 |
+| Date | 날짜(일/월/연) | 식별자 → 학습 단계에서 주말 여부(`is_weekend`, 토·일=1)와 월(`month`) 계산 |
 | Rented Bike Count | 해당 시간의 자전거 대여 수 | Label |
 | Hour | 시간(0~23) | Feature |
 | Temperature(°C) | 기온(°C) | Feature |
@@ -38,14 +38,14 @@ Label은 머신러닝 모델이 예측하고자 하는 값이다.
 | Rainfall(mm) | 강수량(mm) | Feature |
 | Holiday | 공휴일 여부 | Feature |
 | Snowfall (cm) | 적설량(cm) | 정제 데이터에 남기지만 모델 입력에서 뺌 (눈 온 시간이 5%뿐이고 기온과 겹침) |
-| Seasons | 계절 | 정제 데이터에 남기지만 모델 입력에서 뺌 (기온과 정보가 겹침) |
+| Seasons | 계절 | 정제 데이터에 남기지만 모델 입력에서 뺌 (월이 더 잘게 같은 정보를 담음) |
 | Wind speed (m/s) | 풍속 | 제외 (열 삭제) |
 | Visibility (10m) | 가시거리 | 제외 (열 삭제) |
 | Dew point temperature(°C) | 이슬점 온도 | 제외 (열 삭제, 기온·습도와 겹침) |
 | Solar Radiation (MJ/m2) | 일사량 | 제외 (열 삭제) |
 | Functioning Day | 대여소 운영 여부 | 제외 (No 행 격리 후 열 삭제) |
 
-모델 입력은 Hour, Temperature(°C), Humidity(%), Rainfall(mm), Holiday, is_weekend 6개이다.
+모델 입력은 Hour, Temperature(°C), Humidity(%), Rainfall(mm), Holiday, is_weekend, month 7개이다.
 
 열별 역할·허용 범위·판단 이유는 [`docs/column-roles.json`](../docs/column-roles.json)에 있다.
 
