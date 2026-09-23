@@ -1,10 +1,17 @@
 {
-  "dataset": "서울 따릉이 시간별 대여 수와 날씨 (data/raw/SeoulBikeData.csv)",
+  "dataset": "서울 따릉이 시간별 대여 수와 날씨 (data/raw/SeoulBikeData.csv, UCI 원본 그대로)",
+  "encoding": "latin1",
   "prediction_time": "대여소 운영자가 해당 시간의 자전거 배치를 결정하기 전",
   "row_meaning": "하루 중 한 시간 동안의 자전거 대여 수와 그 시간의 날씨·계절·공휴일·운영 여부",
-  "duplicate_policy": "모든 열이 같은 후속 행은 격리한다. Date 열이 없어 진짜 중복인지 확인할 수 없으므로 원인은 duplicate로 남긴다.",
+  "duplicate_policy": "Date를 포함한 모든 열이 같은 후속 행은 격리한다.",
   "missing_policy": "필수 값 결측은 격리하며 목표 Rented Bike Count를 임의로 채우지 않는다.",
   "columns": {
+    "Date": {
+      "role": "identifier",
+      "type": "date",
+      "required": true,
+      "reason": "관측 날짜(일/월/연). 모델에 직접 넣지 않고 학습 단계에서 주말 여부(is_weekend)를 계산하는 데 쓴다. 날짜는 미리 알 수 있다."
+    },
     "Rented Bike Count": {
       "role": "target",
       "type": "number",
@@ -35,6 +42,33 @@
       "min": 1,
       "max": 100,
       "reason": "습도는 예보로 미리 알 수 있다. 서울에서 0%는 사실상 불가능해 센서 오류로 보고 격리한다(팀 결정)."
+    },
+    "Wind speed (m/s)": {
+      "role": "exclude",
+      "type": "number",
+      "required": true,
+      "min": 0,
+      "reason": "팀 원본(9열 버전)에 없던 열로, 입력 결정 단계에서 사용하지 않기로 했다."
+    },
+    "Visibility (10m)": {
+      "role": "exclude",
+      "type": "number",
+      "required": true,
+      "min": 0,
+      "reason": "팀 원본(9열 버전)에 없던 열로, 입력 결정 단계에서 사용하지 않기로 했다."
+    },
+    "Dew point temperature(°C)": {
+      "role": "exclude",
+      "type": "number",
+      "required": true,
+      "reason": "기온·습도로 계산되는 값이라 정보가 겹친다. 팀 원본(9열 버전)에도 없던 열이다."
+    },
+    "Solar Radiation (MJ/m2)": {
+      "role": "exclude",
+      "type": "number",
+      "required": true,
+      "min": 0,
+      "reason": "팀 원본(9열 버전)에 없던 열로, 입력 결정 단계에서 사용하지 않기로 했다."
     },
     "Rainfall(mm)": {
       "role": "feature",

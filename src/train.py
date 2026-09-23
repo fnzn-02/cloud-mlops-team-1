@@ -12,7 +12,7 @@ from sklearn.linear_model import LinearRegression
 from sklearn.metrics import mean_absolute_error
 from sklearn.model_selection import train_test_split
 
-FEATURES = ['Hour', 'Temperature(°C)', 'Humidity(%)', 'Rainfall(mm)', 'Holiday']
+FEATURES = ['Hour', 'Temperature(°C)', 'Humidity(%)', 'Rainfall(mm)', 'Holiday', 'is_weekend']
 TARGET = 'Rented Bike Count'
 SEED = 42  # 누가 실행해도 같은 분할·모델이 나오도록 고정
 
@@ -23,6 +23,7 @@ def digest(path):  # 입력·모델 파일 동일성 확인용 SHA-256
 
 def load_xy(path):
     df = pd.read_csv(path, encoding='utf-8')
+    df['is_weekend'] = (pd.to_datetime(df['Date'], format='%d/%m/%Y').dt.dayofweek >= 5).astype(int)  # 토·일=1
     x = df[FEATURES].copy()
     x['Holiday'] = (x['Holiday'] == 'Holiday').astype(int)  # Holiday=1, No Holiday=0
     return x, df[TARGET]
