@@ -1,0 +1,28 @@
+{
+  "input": "data/processed/bike-clean.csv",
+  "input_sha256": "13e144a617b469b128c523dca96840dd93b1f435c9072ad45de777f40030b46b",
+  "features": [
+    "Hour",
+    "Temperature(°C)",
+    "Humidity(%)",
+    "Rainfall(mm)",
+    "Holiday"
+  ],
+  "target": "Rented Bike Count",
+  "split": {
+    "method": "random",
+    "test_size": 0.2,
+    "random_state": 42,
+    "train_rows": 6758,
+    "test_rows": 1690
+  },
+  "metric": "MAE (평균 절대 오차, 단위: 대)",
+  "baseline_mae": 519.57,
+  "mae": {
+    "linear_regression": 339.19,
+    "random_forest": 168.02
+  },
+  "best_model": "random_forest",
+  "model_path": "models/model.joblib",
+  "limitation": "Date 열이 없어 시간 순서가 아닌 랜덤 분할이며, 실제 서비스(미래 예측)보다 점수가 좋게 나올 수 있다."
+}
