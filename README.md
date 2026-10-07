@@ -38,10 +38,11 @@ python3 src/preprocess.py
 ## 학습 방법
 
 - 입력: `data/processed/bike-clean.csv` (8,448행)
-- Holiday는 숫자로 바꾼다 (Holiday=1, No Holiday=0).
-- Date로 주말 여부 `is_weekend`(토·일=1, 평일=0)와 월 `month`(1~12)를 계산한다.
-- 학습용 80% / 시험용 20%로 랜덤 분할한다 (`random_state=42` 고정). 시험용은 학습에 사용하지 않는다.
-- 기준선(학습용 평균값으로 예측), 선형회귀, 랜덤포레스트, Gradient Boosting(HistGradientBoosting)을 비교하고, MAE가 가장 낮은 모델을 저장한다.
+- Date로 주말 여부 `is_weekend`(토·일=1)와 월 `month`(1~12)를 계산하고, Holiday는 숫자로 바꾼다 (Holiday=1).
+- 학습 60% / 검증 20% / 평가 20%로 랜덤 분할한다 (`random_state=42` 고정).
+- 입력 3가지(5개 / +주말 / +주말·월) × 모델 3개(선형회귀, 랜덤포레스트, Gradient Boosting) = 9개 실험을 **검증용**으로 비교해 고른다.
+- 고른 모델은 **평가용으로 마지막에 한 번만** 채점한다.
+- 모든 실험은 MLflow에 기록한다 (`.venv/bin/mlflow ui` → http://127.0.0.1:5000).
 
 ## 결과
 
@@ -84,3 +85,20 @@ x = [18, 25, 50, 0, 0, 0, 6]  # [시간, 기온, 습도, 강수량, 공휴일(1/
 print('예측 대여 수:', round(model.predict(pd.DataFrame([x], columns=cols))[0]), '대')
 "
 ```
+### 검증용 비교 (MAE, 단위: 대)
+
+| 입력 | 선형회귀 | 랜덤포레스트 | Gradient Boosting |
+|---|---:|---:|---:|
+| 5개 | 332.89 | 171.58 | 171.01 |
+| + 주말 | 332.63 | 139.11 | 131.32 |
+| **+ 주말 + 월** | 330.73 | 119.04 | **98.17 (선택)** |
+
+![MLflow 비교](docs/mlflow-compare.png)
+
+### 평가용 최종 결과 (선택한 모델, 1회)
+
+| 항목 | 값 |
+|—|—:|
+| MAE | 94.30대 |
+| 기준선 대비 개선 | 81.9% |
+| R² | 0.942 |
