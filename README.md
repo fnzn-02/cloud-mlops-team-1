@@ -113,3 +113,64 @@ print('예측 대여 수:', round(model.predict(pd.DataFrame([x], columns=cols))
 | 기준선 대비 개선 | 81.9% |
 | R² | 0.942 |
 
+## 예측 API
+
+### 실행
+
+저장소 최상위 폴더에서 실행한다.
+
+```sh
+.venv/bin/uvicorn src.api:app
+```
+
+Windows: `.\.venv\Scripts\python.exe -m uvicorn src.api:app`
+
+- `GET /health`: 서버·모델 상태
+- `POST /predict`: 예측
+- 테스트 화면: http://127.0.0.1:8000/docs
+
+### 요청과 응답
+
+요청 (`POST /predict`)
+
+```json
+{"date": "2018-06-15", "hour": 18, "temperature": 25.0, "humidity": 50, "rainfall": 0.0, "holiday": false}
+```
+
+정상 응답 (200)
+
+```json
+{"predicted_rentals": 3313, "unit": "대"}
+```
+
+입력 오류 응답 (422)
+
+```json
+{"errors": [{"field": "hour", "reason": "시간(0~23 정수)은(는) 0~23이어야 합니다"}]}
+```
+
+### 입력 규칙
+
+| 항목 | 규칙 |
+|---|---|
+| date | YYYY-MM-DD (주말 여부·월은 서버가 계산) |
+| hour | 0~23 정수 |
+| temperature | -30~45 (°C) |
+| humidity | 1~100 (%) |
+| rainfall | 0 이상 (mm) |
+| holiday | true / false |
+
+숫자처럼 생긴 문자열(`"25"`)과 true/false는 숫자로 받지 않는다.
+
+### 정상·오류 확인 결과
+
+서버를 켠 상태에서 `.venv/bin/python src/check_api.py`로 실제 요청을 보내 확인했다. 모델 준비 실패는 `MODEL_PATH=models/no-model.joblib`로 서버를 켠 뒤 `--cases model-missing`으로 확인했다. 응답 원문은 `results/api-check.json`, `results/api-check-model-missing.json`에 있다.
+
+| 상황 | 상태 코드 | 응답 |
+|---|---:|---|
+| 서버 상태 확인 | 200 | `status: ok` |
+| 정상 입력 | 200 | 예측 3,313대 |
+| 시간 25 | 422 | hour 범위 오류 |
+| 습도에 문자 | 422 | humidity 숫자 아님 |
+| 강수량 누락 | 422 | rainfall 필수 항목 없음 |
+| 모델 파일 없음 | 503 | 모델을 읽지 못함 |
