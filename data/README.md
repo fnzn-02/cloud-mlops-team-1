@@ -30,7 +30,7 @@ Label은 머신러닝 모델이 예측하고자 하는 값이다.
 
 | 컬럼 | 설명 | 역할 |
 |---|---|---|
-| Date | 날짜(일/월/연) | 식별자 → 학습 단계에서 주말 여부(`is_weekend`, 토·일=1)와 월(`month`) 계산 |
+| Date | 날짜(일/월/연) | 식별자 → 학습 단계에서 주말 여부(`is_weekend`), 월(`month`), 요일(`dow`), 쉬는 날(`is_offday` = 주말 또는 공휴일) 계산 |
 | Rented Bike Count | 해당 시간의 자전거 대여 수 | Label |
 | Hour | 시간(0~23) | Feature |
 | Temperature(°C) | 기온(°C) | Feature |
@@ -45,7 +45,7 @@ Label은 머신러닝 모델이 예측하고자 하는 값이다.
 | Solar Radiation (MJ/m2) | 일사량 | 제외 (열 삭제) |
 | Functioning Day | 대여소 운영 여부 | 제외 (No 행 격리 후 열 삭제) |
 
-모델 입력은 Hour, Temperature(°C), Humidity(%), Rainfall(mm), Holiday, is_weekend, month 7개이다.
+모델 입력은 Hour, Temperature(°C), Humidity(%), Rainfall(mm), is_offday, month, dow 7개이다. Holiday와 주말 여부는 `is_offday`(쉬는 날)로 합쳐 넣는다.
 
 열별 역할·허용 범위·판단 이유는 [`docs/column-roles.json`](../docs/column-roles.json)에 있다.
 

@@ -1,6 +1,7 @@
 """저장된 모델로 시간당 자전거 대여 수를 예측한다.
 
-입력 검사 범위는 docs/column-roles.json의 규칙과 같다.
+입력 검사 범위는 학습 데이터에 실제로 있던 범위에 맞춘다.
+범위 밖 값은 모델이 배운 적이 없어 끝값과 같은 예측만 나오므로 받지 않는다.
 """
 import datetime
 import os
@@ -11,14 +12,13 @@ import pandas as pd
 
 # 서버 실행 시 MODEL_PATH 환경 변수로 다른 모델 경로를 줄 수 있다 (모델 준비 실패 테스트용)
 MODEL_PATH = Path(os.environ.get('MODEL_PATH', 'models/model.joblib'))
-FEATURES = ['Hour', 'Temperature(°C)', 'Humidity(%)', 'Rainfall(mm)', 'Holiday', 'is_weekend', 'month']
 
-# 입력 이름: (설명, 최소, 최대). None은 제한 없음
+# 입력 이름: (설명, 최소, 최대). 학습 데이터 범위: 기온 -17.8~39.4°C, 습도 1~98%, 강수량 0~35mm
 NUMBER_RULES = {
     'hour': ('시간(0~23 정수)', 0, 23),
-    'temperature': ('기온(°C)', -30, 45),
+    'temperature': ('기온(°C)', -20, 40),
     'humidity': ('습도(%)', 1, 100),
-    'rainfall': ('강수량(mm)', 0, None),
+    'rainfall': ('강수량(mm)', 0, 40),
 }
 REQUIRED = ['date', *NUMBER_RULES, 'holiday']
 
@@ -61,16 +61,22 @@ def validate(payload):
 
 
 def predict(model, payload):
-    """검사를 통과한 입력으로 예측한다. 날짜로 주말 여부와 월을 계산한다."""
+    """검사를 통과한 입력으로 예측한다. 날짜로 요일·주말·쉬는 날·월을 계산한다."""
     date = datetime.date.fromisoformat(payload['date'])
-    row = [[
-        int(payload['hour']),
-        payload['temperature'],
-        payload['humidity'],
-        payload['rainfall'],
-        int(payload['holiday']),        # 공휴일=1, 평일=0
-        int(date.weekday() >= 5),       # 토·일=1
-        date.month,                     # 1~12
-    ]]
-    value = model.predict(pd.DataFrame(row, columns=FEATURES))[0]
+    is_weekend = int(date.weekday() >= 5)  # 토·일=1
+    holiday = int(payload['holiday'])      # 공휴일=1, 평일=0
+    values = {
+        'Hour': int(payload['hour']),
+        'Temperature(°C)': payload['temperature'],
+        'Humidity(%)': payload['humidity'],
+        'Rainfall(mm)': payload['rainfall'],
+        'Holiday': holiday,
+        'is_weekend': is_weekend,
+        'is_offday': is_weekend | holiday,  # 쉬는 날 = 주말 또는 공휴일
+        'month': date.month,                # 1~12
+        'dow': date.weekday(),              # 월=0 ~ 일=6
+    }
+    # 모델이 학습한 입력 목록·순서를 모델 파일에서 읽어, 입력 조합이 바뀌어도 이 코드를 고치지 않게 한다
+    columns = list(model.feature_names_in_)
+    value = model.predict(pd.DataFrame([[values[c] for c in columns]], columns=columns))[0]
     return {'predicted_rentals': max(0, round(float(value))), 'unit': '대'}
