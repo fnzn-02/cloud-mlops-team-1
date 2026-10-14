@@ -1,6 +1,6 @@
 # cloud-mlops-team-1
 
-날씨와 시간 정보로 서울 따릉이의 **시간당 자전거 대여 수**를 예측한다. 대여소 운영자가 시간대별 자전거 배치를 미리 정하는 데 사용하는 것을 목표로 한다.
+서울시 공공자전거 운영 담당자가 날짜와 날씨를 입력하면, 그 한 시간 동안 **서울 전체**에서 빌려질 자전거 수를 예측해 공급·재배치 계획에 활용한다.
 
 - 데이터 설명·전처리 규칙: [`data/README.md`](data/README.md)
 - 입력(7개): Hour, Temperature(°C), Humidity(%), Rainfall(mm), Holiday, is_weekend(주말 여부), month(월)
@@ -85,6 +85,20 @@ x = [18, 25, 50, 0, 0, 0, 6]  # [시간, 기온, 습도, 강수량, 공휴일(1/
 print('예측 대여 수:', round(model.predict(pd.DataFrame([x], columns=cols))[0]), '대')
 "
 ```
+<<<<<<< HEAD
+=======
+## 학습 방법
+
+- 입력: `data/processed/bike-clean.csv` (8,448행)
+- Date로 주말 여부 `is_weekend`(토·일=1)와 월 `month`(1~12)를 계산하고, Holiday는 숫자로 바꾼다 (Holiday=1).
+- 학습 60% / 검증 20% / 평가 20%로 랜덤 분할한다 (`random_state=42` 고정).
+- 입력 3가지(5개 / +주말 / +주말·월) × 모델 3개(선형회귀, 랜덤포레스트, Gradient Boosting) = 9개 실험을 **검증용**으로 비교해 고른다.
+- 고른 모델은 **평가용으로 마지막에 한 번만** 채점한다.
+- 모든 실험은 MLflow에 기록한다 (`.venv/bin/mlflow ui` → http://127.0.0.1:5000).
+
+## 결과
+
+>>>>>>> fe1c81472db24060b9ab05f17a4316ae4b3e497e
 ### 검증용 비교 (MAE, 단위: 대)
 
 | 입력 | 선형회귀 | 랜덤포레스트 | Gradient Boosting |
@@ -102,3 +116,88 @@ print('예측 대여 수:', round(model.predict(pd.DataFrame([x], columns=cols))
 | MAE | 94.30대 |
 | 기준선 대비 개선 | 81.9% |
 | R² | 0.942 |
+<<<<<<< HEAD
+=======
+
+## 예측 API
+
+### 실행
+
+저장소 최상위 폴더에서 실행한다.
+
+```sh
+.venv/bin/uvicorn src.api:app
+```
+
+Windows: `.\.venv\Scripts\python.exe -m uvicorn src.api:app`
+
+- `GET /health`: 서버·모델 상태
+- `POST /predict`: 예측
+- 테스트 화면: http://127.0.0.1:8000/docs
+
+### 요청과 응답
+
+요청 (`POST /predict`)
+
+```json
+{"date": "2018-06-15", "hour": 18, "temperature": 25.0, "humidity": 50, "rainfall": 0.0, "holiday": false}
+```
+
+정상 응답 (200)
+
+```json
+{"predicted_rentals": 3313, "unit": "대"}
+```
+
+입력 오류 응답 (422)
+
+```json
+{"errors": [{"field": "hour", "reason": "시간(0~23 정수)은(는) 0~23이어야 합니다"}]}
+```
+
+### 입력 규칙
+
+| 항목 | 규칙 |
+|---|---|
+| date | YYYY-MM-DD (주말 여부·월은 서버가 계산) |
+| hour | 0~23 정수 |
+| temperature | -30~45 (°C) |
+| humidity | 1~100 (%) |
+| rainfall | 0 이상 (mm) |
+| holiday | true / false |
+
+숫자처럼 생긴 문자열(`"25"`)과 true/false는 숫자로 받지 않는다.
+
+### 정상·오류 확인 결과
+
+서버를 켠 상태에서 `.venv/bin/python src/check_api.py`로 실제 요청을 보내 확인했다. 모델 준비 실패는 `MODEL_PATH=models/no-model.joblib`로 서버를 켠 뒤 `--cases model-missing`으로 확인했다. 응답 원문은 `results/api-check.json`, `results/api-check-model-missing.json`에 있다.
+
+| 상황 | 상태 코드 | 응답 |
+|---|---:|---|
+| 서버 상태 확인 | 200 | `status: ok` |
+| 정상 입력 | 200 | 예측 3,313대 |
+| 시간 25 | 422 | hour 범위 오류 |
+| 습도에 문자 | 422 | humidity 숫자 아님 |
+| 강수량 누락 | 422 | rainfall 필수 항목 없음 |
+| 모델 파일 없음 | 503 | 모델을 읽지 못함 |
+
+## 예측 웹페이지
+
+API 서버를 켜고 브라우저에서 http://127.0.0.1:8000/ 을 연다.
+
+- 날짜, 시간, 기온, 습도, 강수량, 공휴일을 입력하고 **예측하기**를 누르면 `/predict`를 호출해 예상 대여 수를 보여 준다.
+- 시간은 00~23시 중에서 고르고, 날짜를 고르면 요일과 주말 여부가 바로 표시된다.
+- 결과에는 평가 데이터 평균 오차(약 94대)를 바탕으로 한 예상 범위를 함께 보여 준다.
+- 입력이 잘못되면 해당 칸을 빨갛게 표시하고, 서버가 돌려준 오류 이유를 보여 준다.
+- 코드: `web/index.html` (서버의 `GET /`가 이 파일을 돌려준다)
+
+| 입력 | 화면 결과 |
+|---|---|
+| 정상 입력 (2018-06-15 금 18시) | 예상 대여 수 3,313대 (보통 3,219~3,407대) |
+| 공휴일 체크 | 예상 대여 수 2,818대 |
+| 습도 150 | 습도 칸 빨간 테두리 + "1~100이어야 합니다" |
+| 강수량 빈칸 | 강수량 칸 빨간 테두리 + "필수 항목이 없습니다" |
+
+![정상 화면](docs/web-demo-ok.png)
+![오류 화면](docs/web-demo-error.png)
+>>>>>>> fe1c81472db24060b9ab05f17a4316ae4b3e497e

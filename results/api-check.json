@@ -1,0 +1,106 @@
+[
+  {
+    "name": "health",
+    "request": {
+      "method": "GET",
+      "path": "/health",
+      "body": null
+    },
+    "status": 200,
+    "response": {
+      "status": "ok",
+      "model_path": "models/model.joblib"
+    }
+  },
+  {
+    "name": "정상 입력",
+    "request": {
+      "method": "POST",
+      "path": "/predict",
+      "body": {
+        "date": "2018-06-15",
+        "hour": 18,
+        "temperature": 25.0,
+        "humidity": 50,
+        "rainfall": 0.0,
+        "holiday": false
+      }
+    },
+    "status": 200,
+    "response": {
+      "predicted_rentals": 3313,
+      "unit": "대"
+    }
+  },
+  {
+    "name": "시간 25",
+    "request": {
+      "method": "POST",
+      "path": "/predict",
+      "body": {
+        "date": "2018-06-15",
+        "hour": 25,
+        "temperature": 25.0,
+        "humidity": 50,
+        "rainfall": 0.0,
+        "holiday": false
+      }
+    },
+    "status": 422,
+    "response": {
+      "errors": [
+        {
+          "field": "hour",
+          "reason": "시간(0~23 정수)은(는) 0~23이어야 합니다"
+        }
+      ]
+    }
+  },
+  {
+    "name": "습도에 문자",
+    "request": {
+      "method": "POST",
+      "path": "/predict",
+      "body": {
+        "date": "2018-06-15",
+        "hour": 18,
+        "temperature": 25.0,
+        "humidity": "많음",
+        "rainfall": 0.0,
+        "holiday": false
+      }
+    },
+    "status": 422,
+    "response": {
+      "errors": [
+        {
+          "field": "humidity",
+          "reason": "습도(%)은(는) 숫자여야 합니다"
+        }
+      ]
+    }
+  },
+  {
+    "name": "강수량 누락",
+    "request": {
+      "method": "POST",
+      "path": "/predict",
+      "body": {
+        "date": "2018-06-15",
+        "hour": 18,
+        "temperature": 25.0,
+        "humidity": 50,
+        "holiday": false
+      }
+    },
+    "status": 422,
+    "response": {
+      "errors": [
+        {
+          "field": "rainfall",
+          "reason": "필수 항목이 없습니다"
+        }
+      ]
+    }
+  }
+]

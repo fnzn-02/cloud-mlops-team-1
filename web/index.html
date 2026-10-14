@@ -1,0 +1,319 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>서울 공공자전거 대여 수 예측</title>
+  <style>
+    :root {
+      --bg: #f4f6fa;
+      --card: #ffffff;
+      --text: #1b2330;
+      --muted: #5b6678;
+      --border: #d5dbe5;
+      --accent: #2563eb;
+      --accent-text: #ffffff;
+      --ok-bg: #ecfdf3;
+      --ok-text: #05603a;
+      --err-bg: #fef3f2;
+      --err-text: #b42318;
+      --focus: rgba(37, 99, 235, 0.35);
+    }
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --bg: #0f141b;
+        --card: #18202b;
+        --text: #e6ebf2;
+        --muted: #9aa6b6;
+        --border: #2f3a49;
+        --accent: #4f8cff;
+        --ok-bg: #0f2e22;
+        --ok-text: #7ee2b0;
+        --err-bg: #3a1714;
+        --err-text: #ffaaa3;
+        --focus: rgba(79, 140, 255, 0.45);
+      }
+    }
+
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: system-ui, -apple-system, "Segoe UI", "Malgun Gothic", sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.5;
+    }
+    main { max-width: 520px; margin: 0 auto; padding: 40px 16px 64px; }
+    header h1 { margin: 0; font-size: 24px; }
+    header p { margin: 6px 0 24px; color: var(--muted); font-size: 14px; }
+
+    .card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 20px;
+    }
+    .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px 12px; }
+
+    .field label { display: block; font-size: 13px; font-weight: 600; margin-bottom: 6px; }
+    .field input, .field select {
+      width: 100%;
+      padding: 10px 12px;
+      font: inherit;
+      font-size: 16px;
+      color: var(--text);
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+    }
+    .field input:focus, .field select:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 3px var(--focus); }
+    .field [aria-invalid="true"] { border-color: var(--err-text); }
+    .hint { margin: 4px 0 0; font-size: 12px; color: var(--muted); }
+    .field-error { margin: 4px 0 0; font-size: 12px; color: var(--err-text); }
+    .field-error:empty { display: none; }
+
+    .spacer { font-size: 13px; margin-bottom: 6px; }
+    .check { display: flex; align-items: center; gap: 8px; font-size: 15px; }
+    .check input { width: 18px; height: 18px; accent-color: var(--accent); }
+
+    button {
+      margin-top: 20px;
+      width: 100%;
+      padding: 13px;
+      font: inherit;
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--accent-text);
+      background: var(--accent);
+      border: 0;
+      border-radius: 10px;
+      cursor: pointer;
+    }
+    button:focus-visible { outline: 3px solid var(--focus); outline-offset: 2px; }
+    button:disabled { opacity: 0.6; cursor: progress; }
+
+    .result { margin-top: 16px; border-radius: 14px; padding: 20px; }
+    .result[hidden] { display: none; }
+    .result.ok { background: var(--ok-bg); color: var(--ok-text); text-align: center; }
+    .result.error { background: var(--err-bg); color: var(--err-text); }
+    .result .label { margin: 0; font-size: 14px; }
+    .result .value { margin: 4px 0; font-size: 40px; font-weight: 800; font-variant-numeric: tabular-nums; }
+    .result .meta { margin: 0; font-size: 13px; opacity: 0.85; }
+    .result ul { margin: 8px 0 0; padding-left: 20px; }
+
+    footer { margin-top: 24px; font-size: 12px; color: var(--muted); }
+
+    @media (max-width: 420px) {
+      .grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <header>
+      <h1>서울 공공자전거 시간당 대여 수 예측</h1>
+      <p>날짜와 날씨를 넣으면 서울 전체에서 그 한 시간 동안 빌려질 자전거 수를 예측합니다.</p>
+    </header>
+
+    <form id="form" class="card" novalidate>
+      <div class="grid">
+        <div class="field">
+          <label for="date">날짜</label>
+          <input id="date" name="date" type="date" required>
+          <p class="hint" id="date-hint"></p>
+          <p class="field-error" id="date-error"></p>
+        </div>
+        <div class="field">
+          <label for="hour">시간</label>
+          <select id="hour" name="hour"></select>
+          <p class="field-error" id="hour-error"></p>
+        </div>
+        <div class="field">
+          <label for="temperature">기온 (°C)</label>
+          <input id="temperature" name="temperature" type="number" step="0.1" value="25" inputmode="decimal">
+          <p class="field-error" id="temperature-error"></p>
+        </div>
+        <div class="field">
+          <label for="humidity">습도 (%)</label>
+          <input id="humidity" name="humidity" type="number" step="1" value="50" inputmode="numeric">
+          <p class="field-error" id="humidity-error"></p>
+        </div>
+        <div class="field">
+          <label for="rainfall">강수량 (mm)</label>
+          <input id="rainfall" name="rainfall" type="number" step="0.1" value="0" inputmode="decimal">
+          <p class="field-error" id="rainfall-error"></p>
+        </div>
+        <div class="field">
+          <div class="spacer" aria-hidden="true">&nbsp;</div>
+          <label class="check" for="holiday">
+            <input id="holiday" name="holiday" type="checkbox"> 공휴일
+          </label>
+          <p class="field-error" id="holiday-error"></p>
+        </div>
+      </div>
+      <button id="submit" type="submit">예측하기</button>
+    </form>
+
+    <section id="result" class="result" role="status" aria-live="polite" hidden></section>
+
+    <footer>모델: Gradient Boosting · 평가 데이터 평균 오차(MAE) 약 94대 · 데이터: UCI Seoul Bike Sharing Demand</footer>
+  </main>
+
+  <script>
+    const FIELDS = {
+      date: '날짜',
+      hour: '시간',
+      temperature: '기온',
+      humidity: '습도',
+      rainfall: '강수량',
+      holiday: '공휴일',
+    };
+    const WEEKDAYS = ['일', '월', '화', '수', '목', '금', '토'];
+    const MAE = 94;  // results/metrics.json의 평가 MAE (평균적으로 틀리는 대수)
+
+    const form = document.getElementById('form');
+    const dateInput = document.getElementById('date');
+    const hourSelect = document.getElementById('hour');
+    const dateHint = document.getElementById('date-hint');
+    const button = document.getElementById('submit');
+    const result = document.getElementById('result');
+
+    // 시간 선택지 0~23시
+    for (let h = 0; h < 24; h += 1) {
+      hourSelect.add(new Option(`${String(h).padStart(2, '0')}시`, String(h)));
+    }
+
+    // 기본값: 오늘 날짜, 현재 시각
+    const now = new Date();
+    dateInput.value = toIsoDate(now);
+    hourSelect.value = String(now.getHours());
+    updateDateHint();
+    dateInput.addEventListener('input', updateDateHint);
+
+    function toIsoDate(d) {
+      const pad = (n) => String(n).padStart(2, '0');
+      return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}`;
+    }
+
+    function parseDate(value) {  // 'YYYY-MM-DD' → 현지 날짜 (UTC 변환으로 하루 밀리는 것 방지)
+      const [y, m, d] = value.split('-').map(Number);
+      return new Date(y, m - 1, d);
+    }
+
+    function updateDateHint() {
+      if (!dateInput.value) { dateHint.textContent = ''; return; }
+      const day = parseDate(dateInput.value).getDay();
+      const type = day === 0 || day === 6 ? '주말' : '평일';
+      dateHint.textContent = `${WEEKDAYS[day]}요일 · ${type}`;
+    }
+
+    // 빈 칸은 null로 보내 서버가 '필수 항목 없음'으로 알려 주게 한다
+    const toNumber = (value) => (value === '' ? null : Number(value));
+
+    function readPayload() {
+      const data = new FormData(form);
+      return {
+        date: data.get('date') || null,
+        hour: toNumber(data.get('hour')),
+        temperature: toNumber(data.get('temperature')),
+        humidity: toNumber(data.get('humidity')),
+        rainfall: toNumber(data.get('rainfall')),
+        holiday: data.get('holiday') === 'on',
+      };
+    }
+
+    function clearErrors() {
+      for (const name of Object.keys(FIELDS)) {
+        document.getElementById(`${name}-error`).textContent = '';
+        document.getElementById(name).removeAttribute('aria-invalid');
+      }
+    }
+
+    function showFieldErrors(errors) {
+      for (const { field, reason } of errors) {
+        const input = document.getElementById(field);
+        const message = document.getElementById(`${field}-error`);
+        if (!input || !message) continue;
+        input.setAttribute('aria-invalid', 'true');
+        message.textContent = reason;
+      }
+      const first = errors.map((e) => document.getElementById(e.field)).find(Boolean);
+      if (first) first.focus();
+    }
+
+    // 결과 영역은 textContent로만 채워 서버 응답이 HTML로 해석되지 않게 한다
+    function render(kind, title, lines = []) {
+      result.className = `result ${kind}`;
+      result.replaceChildren();
+      const heading = document.createElement('p');
+      heading.className = 'label';
+      heading.textContent = title;
+      result.append(heading);
+      for (const line of lines) result.append(line);
+      result.hidden = false;
+    }
+
+    function text(tag, className, content) {
+      const el = document.createElement(tag);
+      el.className = className;
+      el.textContent = content;
+      return el;
+    }
+
+    function renderPrediction(body, payload) {
+      const d = parseDate(payload.date);
+      const when = `${payload.date}(${WEEKDAYS[d.getDay()]}) ${String(payload.hour).padStart(2, '0')}시`;
+      const low = Math.max(0, body.predicted_rentals - MAE).toLocaleString();
+      const high = (body.predicted_rentals + MAE).toLocaleString();
+      render('ok', '예상 대여 수', [
+        text('p', 'value', `${body.predicted_rentals.toLocaleString()}${body.unit}`),
+        text('p', 'meta', `${when} · 서울 전체`),
+        text('p', 'meta', `보통 ${low}~${high}대 사이 (평균 오차 약 ${MAE}대)`),
+      ]);
+    }
+
+    function renderInputErrors(errors) {
+      const list = document.createElement('ul');
+      for (const { field, reason } of errors) {
+        list.append(text('li', '', `${FIELDS[field] || field}: ${reason}`));
+      }
+      render('error', '입력을 확인해 주세요', [list]);
+    }
+
+    form.addEventListener('submit', async (event) => {
+      event.preventDefault();
+      clearErrors();
+      const payload = readPayload();
+      button.disabled = true;
+      button.textContent = '예측 중…';
+
+      try {
+        const response = await fetch('/predict', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload),
+        });
+        const body = await response.json().catch(() => ({}));
+
+        if (response.ok) {
+          renderPrediction(body, payload);
+        } else if (response.status === 422 && Array.isArray(body.errors)) {
+          showFieldErrors(body.errors);
+          renderInputErrors(body.errors);
+        } else {
+          render('error', `서버 오류 (${response.status})`, [
+            text('p', 'meta', body.reason || '잠시 후 다시 시도해 주세요.'),
+          ]);
+        }
+      } catch (error) {
+        render('error', '서버에 연결할 수 없습니다', [
+          text('p', 'meta', 'API 서버가 켜져 있는지 확인해 주세요.'),
+        ]);
+      } finally {
+        button.disabled = false;
+        button.textContent = '예측하기';
+      }
+    });
+  </script>
+</body>
+</html>

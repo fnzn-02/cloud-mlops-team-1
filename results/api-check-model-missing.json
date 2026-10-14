@@ -1,0 +1,37 @@
+[
+  {
+    "name": "health",
+    "request": {
+      "method": "GET",
+      "path": "/health",
+      "body": null
+    },
+    "status": 503,
+    "response": {
+      "status": "error",
+      "reason": "모델을 읽지 못했습니다",
+      "detail": "FileNotFoundError: [Errno 2] No such file or directory: 'models/no-model.joblib'"
+    }
+  },
+  {
+    "name": "정상 입력",
+    "request": {
+      "method": "POST",
+      "path": "/predict",
+      "body": {
+        "date": "2018-06-15",
+        "hour": 18,
+        "temperature": 25.0,
+        "humidity": 50,
+        "rainfall": 0.0,
+        "holiday": false
+      }
+    },
+    "status": 503,
+    "response": {
+      "status": "error",
+      "reason": "모델을 읽지 못했습니다",
+      "detail": "FileNotFoundError: [Errno 2] No such file or directory: 'models/no-model.joblib'"
+    }
+  }
+]

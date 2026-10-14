@@ -2,4 +2,8 @@
 __pycache__/
 .DS_Store
 mlruns/
+<<<<<<< HEAD
 mlflow.db
+=======
+mlflow.db
+>>>>>>> fe1c81472db24060b9ab05f17a4316ae4b3e497e
