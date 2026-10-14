@@ -28,7 +28,7 @@
     },
     "status": 200,
     "response": {
-      "predicted_rentals": 3313,
+      "predicted_rentals": 3266,
       "unit": "대"
     }
   },

@@ -8,10 +8,10 @@
 from contextlib import asynccontextmanager
 
 from fastapi import Body, FastAPI
+from fastapi.responses import FileResponse, JSONResponse
 
 from src import predict
 
-from fastapi.responses import FileResponse,JSONResponse
 state = {'model': None, 'error': None}
 
 
@@ -30,9 +30,12 @@ app = FastAPI(title='Seoul Bike Rental Prediction', lifespan=lifespan)
 def model_not_ready():
     return JSONResponse(status_code=503, content={'status': 'error', 'reason': '모델을 읽지 못했습니다', 'detail': state['error']})
 
+
 @app.get('/')
 def index():
     return FileResponse('web/index.html')
+
+
 @app.get('/health')
 def health():
     if state['model'] is None:

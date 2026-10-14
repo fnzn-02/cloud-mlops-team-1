@@ -16,11 +16,15 @@ from sklearn.linear_model import LinearRegression
 from sklearn.metrics import mean_absolute_error, r2_score
 from sklearn.model_selection import train_test_split
 
-BASE = ['Hour', 'Temperature(°C)', 'Humidity(%)', 'Rainfall(mm)', 'Holiday']
-FEATURE_SETS = {  # 입력 비교 실험 (README '개선 과정'과 같은 순서)
+WEATHER_TIME = ['Hour', 'Temperature(°C)', 'Humidity(%)', 'Rainfall(mm)']
+BASE = WEATHER_TIME + ['Holiday']
+FEATURE_SETS = {  # 입력 비교 실험. 검증 MAE가 가장 낮은 조합을 자동으로 고른다
     'base5': BASE,
     'base5+weekend': BASE + ['is_weekend'],
     'base5+weekend+month': BASE + ['is_weekend', 'month'],
+    'base5+weekend+month+dow': BASE + ['is_weekend', 'month', 'dow'],
+    # 공휴일(17일)을 주말과 합쳐 '쉬는 날'로 두면 공휴일이 주말 데이터를 빌려 배울 수 있다
+    'offday+month+dow': WEATHER_TIME + ['is_offday', 'month', 'dow'],
 }
 TARGET = 'Rented Bike Count'
 SEED = 42  # 누가 실행해도 같은 분할·모델이 나오도록 고정
@@ -35,7 +39,9 @@ def load(path):
     date = pd.to_datetime(df['Date'], format='%d/%m/%Y')
     df['is_weekend'] = (date.dt.dayofweek >= 5).astype(int)  # 토·일=1
     df['month'] = date.dt.month  # 1~12
+    df['dow'] = date.dt.dayofweek  # 요일: 월=0 ~ 일=6
     df['Holiday'] = (df['Holiday'] == 'Holiday').astype(int)  # Holiday=1, No Holiday=0
+    df['is_offday'] = (df['is_weekend'] | df['Holiday']).astype(int)  # 쉬는 날 = 주말 또는 공휴일
     return df
 
 
