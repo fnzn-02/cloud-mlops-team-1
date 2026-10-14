@@ -1,16 +1,17 @@
 """시간당 자전거 대여 수 예측 API.
 
 실행 (저장소 최상위 폴더): uvicorn src.api:app
+- GET  /        : 예측 웹페이지 (web/index.html)
 - GET  /health  : 서버·모델 상태 (정상 200, 모델 준비 실패 503)
 - POST /predict : 예측 (정상 200, 입력 오류 422, 모델 준비 실패 503)
 """
 from contextlib import asynccontextmanager
 
 from fastapi import Body, FastAPI
-from fastapi.responses import JSONResponse
 
 from src import predict
 
+from fastapi.responses import FileResponse,JSONResponse
 state = {'model': None, 'error': None}
 
 
@@ -29,7 +30,9 @@ app = FastAPI(title='Seoul Bike Rental Prediction', lifespan=lifespan)
 def model_not_ready():
     return JSONResponse(status_code=503, content={'status': 'error', 'reason': '모델을 읽지 못했습니다', 'detail': state['error']})
 
-
+@app.get('/')
+def index():
+    return FileResponse('web/index.html')
 @app.get('/health')
 def health():
     if state['model'] is None:
