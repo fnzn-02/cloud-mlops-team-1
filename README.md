@@ -1,6 +1,6 @@
 # cloud-mlops-team-1
 
-날씨와 시간 정보로 서울 따릉이의 **시간당 자전거 대여 수**를 예측한다. 대여소 운영자가 시간대별 자전거 배치를 미리 정하는 데 사용하는 것을 목표로 한다.
+서울시 공공자전거 운영 담당자가 날짜와 날씨를 입력하면, 그 한 시간 동안 **서울 전체**에서 빌려질 자전거 수를 예측해 공급·재배치 계획에 활용한다.
 
 - 데이터 설명·전처리 규칙: [`data/README.md`](data/README.md)
 - 입력(7개): Hour, Temperature(°C), Humidity(%), Rainfall(mm), Holiday, is_weekend(주말 여부), month(월)
