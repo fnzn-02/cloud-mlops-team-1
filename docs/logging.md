@@ -54,9 +54,28 @@ API는 이벤트마다 **JSON 한 줄**을 콘솔에 남긴다. `CLOUDWATCH_LOG_
 
 ## CloudWatch 설정
 
+### 수업 계정에서 실행 (실제로 확인한 방법)
+
+- 학생 계정은 **MFA를 등록하고 MFA 코드로 다시 로그인해야** CloudShell 등을 쓸 수 있다 (그 전에는 `StudentSelfManagement` 정책이 거부). 액세스 키 생성은 막혀 있으므로 CloudShell에서 실행한다.
+- 우리 팀 이름: 로그 그룹 `/mlops/team1-bike-rental`, 스트림 `bike-api-<날짜>`, 버킷 `team1-bike-rental-logs-093356173512`. (`/mlops/bike-rental`은 다른 팀 그룹이므로 쓰지 않는다)
+- 실행 결과: [`results/cloudwatch-s3-check.md`](../results/cloudwatch-s3-check.md)
+
+```sh
+# CloudShell (서울 리전)
+git clone -b feat/cloudwatch-logs https://github.com/fnzn-02/cloud-mlops-team-1.git && cd cloud-mlops-team-1
+python3 -m venv /tmp/venv
+/tmp/venv/bin/pip install pandas==3.0.6 scikit-learn==1.9.1 joblib==1.6.0 fastapi==0.142.2 uvicorn==0.54.0 boto3==1.43.120 watchtower==3.4.0
+export CLOUDWATCH_LOG_GROUP=/mlops/team1-bike-rental CLOUDWATCH_LOG_STREAM=bike-api-20261028 AWS_REGION=ap-northeast-2
+nohup /tmp/venv/bin/python -m uvicorn src.api:app --port 8000 > /tmp/server.log 2>&1 &
+/tmp/venv/bin/python src/check_api.py --out /tmp/api-check-cloud.json
+kill -INT %1   # 서버를 끄면 남은 로그를 CloudWatch로 보낸다
+```
+
+### 내 PC에서 실행 (AWS 자격 증명이 있을 때)
+
 ```sh
 # Windows PowerShell
-$env:CLOUDWATCH_LOG_GROUP = "/mlops/bike-api"
+$env:CLOUDWATCH_LOG_GROUP = "/mlops/team1-bike-rental"
 $env:CLOUDWATCH_LOG_STREAM = "bike-api-local"   # 생략하면 bike-api-<컴퓨터 이름>
 $env:AWS_REGION = "ap-northeast-2"
 .\.venv\Scripts\python.exe -m uvicorn src.api:app
@@ -66,10 +85,16 @@ $env:AWS_REGION = "ap-northeast-2"
 - 로그는 10초마다 모아서 보내고, 서버를 끌 때 남은 로그를 보낸다.
 - 연결에 실패하면 콘솔에 `cloudwatch_failed`를 남기고 서버는 콘솔 로그만으로 계속 동작한다.
 
-## Log Stream → S3 내보내기 (AWS 콘솔)
+## Log Stream → S3 내보내기
 
-1. S3 버킷을 만든다 (CloudWatch Logs와 같은 리전, 예: ap-northeast-2).
-2. 버킷 정책에서 `logs.ap-northeast-2.amazonaws.com`에 `s3:GetBucketAcl`, `s3:PutObject`를 허용한다.
-3. CloudWatch → 로그 그룹 `/mlops/bike-api` → 작업 → **Amazon S3로 데이터 내보내기**.
-4. 기간, 스트림 접두사(예: `bike-api-local`), 버킷, 접두사(예: `bike-logs/`)를 지정해 내보낸다.
-5. S3에 `.gz` 파일이 생기면 받아서 압축을 풀면 위의 JSON 줄이 들어 있다 (각 줄 앞에 CloudWatch 수신 시각이 붙는다).
+1. S3 버킷 `team1-bike-rental-logs-093356173512`를 만든다 (서울 리전, 퍼블릭 액세스 차단).
+2. 버킷 정책에서 `logs.ap-northeast-2.amazonaws.com`에 `s3:GetBucketAcl`(버킷), `s3:PutObject`(버킷/*)를 허용한다. 조건으로 우리 계정(`aws:SourceAccount`)만 허용한다.
+3. 내보내기 작업 (콘솔: CloudWatch → 로그 그룹 → 작업 → **Amazon S3로 데이터 내보내기**와 같다):
+   ```sh
+   aws logs create-export-task --log-group-name /mlops/team1-bike-rental \
+     --log-stream-name-prefix bike-api-20261028 --from <시작 ms> --to <끝 ms> \
+     --destination team1-bike-rental-logs-093356173512 --destination-prefix bike-logs/run-20261028
+   aws logs describe-export-tasks --task-id <작업 ID>   # COMPLETED까지 기다린다
+   ```
+4. 다시 읽기: `000000.gz`를 받아 압축을 풀고 줄 수와 SHA-256을 원본(CloudWatch 조회 건수)과 대조한다. 각 줄 앞에 CloudWatch 수신 시각이 붙는다.
+5. 매번 새 `run-<날짜>` 접두사를 써서 이전 파일을 덮어쓰지 않는다.
