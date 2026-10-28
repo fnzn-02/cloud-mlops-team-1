@@ -4,6 +4,7 @@
 범위 밖 값은 모델이 배운 적이 없어 끝값과 같은 예측만 나오므로 받지 않는다.
 """
 import datetime
+import hashlib
 import os
 from pathlib import Path
 
@@ -22,9 +23,33 @@ NUMBER_RULES = {
 }
 REQUIRED = ['date', *NUMBER_RULES, 'holiday']
 
+# 피드백으로 받는 실제 대여 수 상한. 학습 데이터 최대는 3,556대라 넉넉히 잡는다
+ACTUAL_MAX = 10000
+
 
 def load_model():
     return joblib.load(MODEL_PATH)
+
+
+def model_version():
+    """모델 파일 내용의 SHA-256 앞 12자리. 어떤 모델이 낸 예측인지 로그에서 구분하는 데 쓴다."""
+    return hashlib.sha256(MODEL_PATH.read_bytes()).hexdigest()[:12]
+
+
+def validate_feedback(payload):
+    """피드백(실제 대여 수) 입력을 검사해 오류 목록을 돌려준다."""
+    errors = []
+    request_id = payload.get('request_id')
+    if not isinstance(request_id, str) or not request_id.strip():
+        errors.append({'field': 'request_id', 'reason': '/predict 응답의 request_id(문자열)가 필요합니다'})
+    actual = payload.get('actual_rentals')
+    if actual is None:
+        errors.append({'field': 'actual_rentals', 'reason': '필수 항목이 없습니다'})
+    elif isinstance(actual, bool) or not isinstance(actual, int):
+        errors.append({'field': 'actual_rentals', 'reason': '실제 대여 수는 정수여야 합니다'})
+    elif not 0 <= actual <= ACTUAL_MAX:
+        errors.append({'field': 'actual_rentals', 'reason': f'실제 대여 수는 0~{ACTUAL_MAX}이어야 합니다'})
+    return errors
 
 
 def validate(payload):
@@ -60,8 +85,8 @@ def validate(payload):
     return errors
 
 
-def predict(model, payload):
-    """검사를 통과한 입력으로 예측한다. 날짜로 요일·주말·쉬는 날·월을 계산한다."""
+def build_values(payload):
+    """검사를 통과한 입력에서 모델이 쓸 수 있는 값을 모두 만든다. 날짜로 요일·주말·쉬는 날·월을 계산한다."""
     date = datetime.date.fromisoformat(payload['date'])
     is_weekend = int(date.weekday() >= 5)  # 토·일=1
     holiday = int(payload['holiday'])      # 공휴일=1, 평일=0
@@ -76,7 +101,23 @@ def predict(model, payload):
         'month': date.month,                # 1~12
         'dow': date.weekday(),              # 월=0 ~ 일=6
     }
-    # 모델이 학습한 입력 목록·순서를 모델 파일에서 읽어, 입력 조합이 바뀌어도 이 코드를 고치지 않게 한다
-    columns = list(model.feature_names_in_)
-    value = model.predict(pd.DataFrame([[values[c] for c in columns]], columns=columns))[0]
+    return values
+
+
+def model_features(model, values):
+    """모델이 학습한 입력만 학습 때 순서대로 골라 돌려준다 (로그의 state로도 쓴다).
+
+    입력 목록·순서를 모델 파일에서 읽어, 입력 조합이 바뀌어도 이 코드를 고치지 않게 한다.
+    """
+    return {c: values[c] for c in model.feature_names_in_}
+
+
+def predict_features(model, features):
+    """model_features()가 만든 입력으로 예측한다."""
+    value = model.predict(pd.DataFrame([features]))[0]
     return {'predicted_rentals': max(0, round(float(value))), 'unit': '대'}
+
+
+def predict(model, payload):
+    """검사를 통과한 입력으로 예측한다."""
+    return predict_features(model, model_features(model, build_values(payload)))

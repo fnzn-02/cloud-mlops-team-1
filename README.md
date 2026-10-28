@@ -1,6 +1,6 @@
 # cloud-mlops-team-1
 
-서울시 공공자전거 운영 담당자가 날짜와 날씨를 입력하면, 그 한 시간 동안 **서울 전체**에서 빌려질 자전거 수를 예측해 공급·재배치 계획에 활용한다.
+서울 따릉이 시간별 대여 기록과 날씨 데이터로 **서울 전체의 시간당 대여 수**를 예측하는 서비스로, 따릉이 운영 상황실 근무자가 비·공휴일처럼 수요가 바뀌는 날 아침에 상황실 화면에서 시간대별 예상 대여 수를 확인해 그날 거리에 내보낼 자전거 수를 정하는 데 쓴다.
 
 - 데이터 설명·전처리 규칙: [`data/README.md`](data/README.md)
 - 입력(7개): Hour, Temperature(°C), Humidity(%), Rainfall(mm), is_offday(쉬는 날 = 주말 또는 공휴일), month(월), dow(요일)
@@ -16,7 +16,8 @@ docs/                  # 열 역할·처리 규칙, 수동 확인 결과, 캡처
 src/preprocess.py      # 전처리
 src/train.py           # 학습·검증·평가, MLflow 기록, 모델 저장
 src/predict.py         # 입력 검사·예측 함수
-src/api.py             # FastAPI 서버 (/, /health, /predict)
+src/api.py             # FastAPI 서버 (/, /health, /predict, /feedback)
+src/event_log.py       # 예측·피드백 JSON 로그, CloudWatch 전송
 src/check_api.py       # API 정상·오류 요청 확인
 src/sample_rows.py     # 수동 확인용 평가 데이터 샘플 추출
 web/index.html         # 예측 웹페이지
@@ -109,7 +110,8 @@ print('예측 대여 수:', round(model.predict(pd.DataFrame([x], columns=cols))
 Windows: `.\.venv\Scripts\python.exe -m uvicorn src.api:app`
 
 - `GET /health`: 서버·모델 상태
-- `POST /predict`: 예측
+- `POST /predict`: 예측 (응답에 `request_id`)
+- `POST /feedback`: 실제 대여 수 기록 → 재학습·강화학습용 로그 ([`docs/logging.md`](docs/logging.md))
 - 테스트 화면: http://127.0.0.1:8000/docs
 
 ### 요청과 응답
@@ -123,7 +125,7 @@ Windows: `.\.venv\Scripts\python.exe -m uvicorn src.api:app`
 정상 응답 (200)
 
 ```json
-{"predicted_rentals": 3266, "unit": "대"}
+{"predicted_rentals": 3266, "unit": "대", "request_id": "63ceff91-1496-4750-b469-dfe7965e6847"}
 ```
 
 입력 오류 응답 (422)
@@ -159,6 +161,10 @@ Windows: `.\.venv\Scripts\python.exe -m uvicorn src.api:app`
 | 습도에 문자 | 422 | humidity 숫자 아님 |
 | 강수량 누락 | 422 | rainfall 필수 항목 없음 |
 | 모델 파일 없음 | 503 | 모델을 읽지 못함 |
+| 피드백 정상 | 200 | `matched: true`, `reward: -266` |
+| 피드백 모르는 id | 200 | `matched: false`, 실제값만 기록 |
+| 피드백 음수 | 422 | actual_rentals 범위 오류 |
+| 피드백 id 누락 | 422 | request_id 필요 |
 
 ## 예측 웹페이지
 
@@ -181,3 +187,6 @@ API 서버를 켜고 브라우저에서 http://127.0.0.1:8000/ 을 연다.
 
 ![정상 화면](docs/web-demo-ok.png)
 ![오류 화면](docs/web-demo-error.png)
+## 예측·피드백 로그 (CloudWatch)
+
+예측·피드백·입력 오류를 JSON 한 줄씩 콘솔에 남기고, `CLOUDWATCH_LOG_GROUP`을 설정하면 CloudWatch Logs에도 보낸다. 로그 형식, state/action/reward 정의, S3 내보내기 절차는 [`docs/logging.md`](docs/logging.md)에 있다.

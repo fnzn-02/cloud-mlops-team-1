@@ -9,7 +9,8 @@
     "status": 200,
     "response": {
       "status": "ok",
-      "model_path": "models/model.joblib"
+      "model_path": "models\\model.joblib",
+      "model_version": "d7a782f5853d"
     }
   },
   {
@@ -29,7 +30,8 @@
     "status": 200,
     "response": {
       "predicted_rentals": 3266,
-      "unit": "대"
+      "unit": "대",
+      "request_id": "63ceff91-1496-4750-b469-dfe7965e6847"
     }
   },
   {
@@ -99,6 +101,85 @@
         {
           "field": "rainfall",
           "reason": "필수 항목이 없습니다"
+        }
+      ]
+    }
+  },
+  {
+    "name": "피드백 정상",
+    "request": {
+      "method": "POST",
+      "path": "/feedback",
+      "body": {
+        "request_id": "63ceff91-1496-4750-b469-dfe7965e6847",
+        "actual_rentals": 3000
+      }
+    },
+    "status": 200,
+    "response": {
+      "status": "ok",
+      "request_id": "63ceff91-1496-4750-b469-dfe7965e6847",
+      "matched": true,
+      "actual_rentals": 3000,
+      "error": 266,
+      "reward": -266
+    }
+  },
+  {
+    "name": "피드백 모르는 id",
+    "request": {
+      "method": "POST",
+      "path": "/feedback",
+      "body": {
+        "request_id": "unknown-id",
+        "actual_rentals": 3000
+      }
+    },
+    "status": 200,
+    "response": {
+      "status": "ok",
+      "request_id": "unknown-id",
+      "matched": false,
+      "actual_rentals": 3000,
+      "error": null,
+      "reward": null
+    }
+  },
+  {
+    "name": "피드백 음수",
+    "request": {
+      "method": "POST",
+      "path": "/feedback",
+      "body": {
+        "request_id": "63ceff91-1496-4750-b469-dfe7965e6847",
+        "actual_rentals": -5
+      }
+    },
+    "status": 422,
+    "response": {
+      "errors": [
+        {
+          "field": "actual_rentals",
+          "reason": "실제 대여 수는 0~10000이어야 합니다"
+        }
+      ]
+    }
+  },
+  {
+    "name": "피드백 id 누락",
+    "request": {
+      "method": "POST",
+      "path": "/feedback",
+      "body": {
+        "actual_rentals": 3000
+      }
+    },
+    "status": 422,
+    "response": {
+      "errors": [
+        {
+          "field": "request_id",
+          "reason": "/predict 응답의 request_id(문자열)가 필요합니다"
         }
       ]
     }
