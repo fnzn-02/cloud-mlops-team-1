@@ -6,6 +6,7 @@ import urllib.error
 import urllib.request
 from pathlib import Path
 
+REQUEST_ID = '<정상 입력의 request_id>'
 NORMAL = {'date': '2018-06-15', 'hour': 18, 'temperature': 25.0, 'humidity': 50, 'rainfall': 0.0, 'holiday': False}
 CASES = {
     'normal': [
@@ -14,6 +15,11 @@ CASES = {
         ('시간 25', 'POST', '/predict', {**NORMAL, 'hour': 25}),
         ('습도에 문자', 'POST', '/predict', {**NORMAL, 'humidity': '많음'}),
         ('강수량 누락', 'POST', '/predict', {k: v for k, v in NORMAL.items() if k != 'rainfall'}),
+        # REQUEST_ID 자리에는 바로 앞 '정상 입력' 응답의 request_id가 들어간다
+        ('피드백 정상', 'POST', '/feedback', {'request_id': REQUEST_ID, 'actual_rentals': 3000}),
+        ('피드백 모르는 id', 'POST', '/feedback', {'request_id': 'unknown-id', 'actual_rentals': 3000}),
+        ('피드백 음수', 'POST', '/feedback', {'request_id': REQUEST_ID, 'actual_rentals': -5}),
+        ('피드백 id 누락', 'POST', '/feedback', {'actual_rentals': 3000}),
     ],
     'model-missing': [  # 서버를 없는 모델 경로로 켠 상태에서 실행한다
         ('health', 'GET', '/health', None),
@@ -41,8 +47,13 @@ def main():
     args = parser.parse_args()
 
     results = []
+    request_id = None
     for name, method, path, body in CASES[args.cases]:
+        if body and body.get('request_id') == REQUEST_ID:
+            body = {**body, 'request_id': request_id}
         status, response = send(args.url, method, path, body)
+        if path == '/predict' and status == 200:
+            request_id = response['request_id']
         results.append({'name': name, 'request': {'method': method, 'path': path, 'body': body},
                         'status': status, 'response': response})
         print(f'{status}  {method} {path}  ({name})')
